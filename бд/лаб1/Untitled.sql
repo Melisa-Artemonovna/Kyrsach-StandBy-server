@@ -1,0 +1,4 @@
+CREATE TABLE PAA_3 (
+    id NUMBER(3) PRIMARY KEY,
+    val VARCHAR2(50)
+);
