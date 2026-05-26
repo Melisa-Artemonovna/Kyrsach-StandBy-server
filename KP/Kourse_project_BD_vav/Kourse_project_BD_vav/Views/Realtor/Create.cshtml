@@ -1,0 +1,356 @@
+@model Kourse_project_BD_vav.Models.Realtor
+@{
+    ViewData["Title"] = "Добавление риэлтора";
+}
+
+<style>
+    /* Основные стили */
+    body {
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        background: linear-gradient(135deg, #e0e0e0 0%, #bdbdbd 100%);
+        margin: 0;
+        padding: 20px;
+        color: #333;
+        min-height: 100vh;
+    }
+
+    .container {
+        max-width: 800px;
+        margin: 40px auto;
+        background: white;
+        border-radius: 15px;
+        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+        padding: 40px;
+        position: relative;
+        overflow: hidden;
+    }
+
+        .container::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: linear-gradient(90deg, #6c757d, #495057);
+        }
+
+    h2 {
+        color: #2c3e50;
+        font-size: 28px;
+        font-weight: 700;
+        margin-bottom: 30px;
+        padding-bottom: 15px;
+        border-bottom: 2px solid #eef2f7;
+        display: flex;
+        align-items: center;
+        gap: 10px;
+    }
+
+    /* Стили для уведомлений */
+    .alert {
+        padding: 16px 20px;
+        border-radius: 8px;
+        margin: 15px 0 25px 0;
+        border: none;
+        font-weight: 500;
+        font-size: 14px;
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        animation: slideIn 0.3s ease;
+    }
+
+    .alert-success {
+        background: linear-gradient(135deg, #2ecc71 0%, #27ae60 100%);
+        color: white;
+        box-shadow: 0 4px 12px rgba(46, 204, 113, 0.25);
+    }
+
+    .alert-error {
+        background: linear-gradient(135deg, #e74c3c 0%, #c0392b 100%);
+        color: white;
+        box-shadow: 0 4px 12px rgba(231, 76, 60, 0.25);
+    }
+
+    .alert-warning {
+        background: linear-gradient(135deg, #f39c12 0%, #d68910 100%);
+        color: white;
+        box-shadow: 0 4px 12px rgba(243, 156, 18, 0.25);
+    }
+
+    /* Стили формы */
+    .form-group {
+        margin-bottom: 25px;
+        position: relative;
+    }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+            color: #2c3e50;
+            font-size: 14px;
+        }
+
+            .form-group label.required::after {
+                content: ' *';
+                color: #e74c3c;
+            }
+
+    .form-control {
+        width: 100%;
+        padding: 14px 16px;
+        border: 2px solid #e0e6ed;
+        border-radius: 10px;
+        font-size: 15px;
+        font-family: inherit;
+        transition: all 0.3s ease;
+        background-color: #f8fafc;
+        box-sizing: border-box;
+    }
+
+        .form-control:focus {
+            outline: none;
+            border-color: #6c757d;
+            background-color: white;
+            box-shadow: 0 0 0 3px rgba(108, 117, 125, 0.15);
+        }
+
+        .form-control:hover {
+            border-color: #bdc3c7;
+        }
+
+    /* Стили для кнопок */
+    .button-group {
+        display: flex;
+        gap: 15px;
+        margin-top: 35px;
+        padding-top: 25px;
+        border-top: 1px solid #eef2f7;
+    }
+
+    .btn {
+        padding: 14px 28px;
+        border: none;
+        border-radius: 10px;
+        font-size: 15px;
+        font-weight: 600;
+        cursor: pointer;
+        transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        gap: 10px;
+        text-decoration: none;
+        min-width: 160px;
+    }
+
+    .btn-primary {
+        background: linear-gradient(135deg, #6c757d 0%, #495057 100%);
+        color: white;
+        box-shadow: 0 4px 12px rgba(108, 117, 125, 0.25);
+    }
+
+        .btn-primary:hover {
+            background: linear-gradient(135deg, #495057 0%, #343a40 100%);
+            transform: translateY(-3px);
+            box-shadow: 0 8px 20px rgba(108, 117, 125, 0.35);
+        }
+
+    .btn-secondary {
+        background: linear-gradient(135deg, #95a5a6 0%, #7f8c8d 100%);
+        color: white;
+        box-shadow: 0 4px 12px rgba(149, 165, 166, 0.25);
+    }
+
+        .btn-secondary:hover {
+            background: linear-gradient(135deg, #7f8c8d 0%, #6c7b7d 100%);
+            transform: translateY(-3px);
+            box-shadow: 0 8px 20px rgba(127, 140, 141, 0.35);
+        }
+
+    /* Grid для формы */
+    .form-grid {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 20px;
+    }
+
+    @@media (max-width: 768px) {
+        .form-grid {
+            grid-template-columns: 1fr;
+        }
+    }
+
+    /* Анимации */
+    @@keyframes slideIn {
+        from {
+            opacity: 0;
+            transform: translateY(-10px);
+        }
+
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+
+    /* Инфо-блок */
+    .info-box {
+        background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+        border-left: 4px solid #6c757d;
+        padding: 15px 20px;
+        margin: 20px 0;
+        border-radius: 8px;
+        font-size: 14px;
+        color: #2c3e50;
+    }
+
+        .info-box p {
+            margin: 5px 0;
+        }
+
+    /* Стили для обязательных полей */
+    .required-hint {
+        font-size: 12px;
+        color: #7f8c8d;
+        margin-top: 5px;
+    }
+
+        .required-hint::before {
+            content: '*';
+            color: #e74c3c;
+            font-weight: bold;
+        }
+</style>
+
+<div class="container">
+    <h2><i class="bi bi-person-plus"></i> Добавление риэлтора</h2>
+
+    @if (TempData["SuccessMessage"] != null)
+    {
+        <div class="alert alert-success">
+            <i class="bi bi-check-circle"></i> @TempData["SuccessMessage"]
+        </div>
+    }
+
+    @if (TempData["ErrorMessage"] != null)
+    {
+        <div class="alert alert-error">
+            <i class="bi bi-exclamation-triangle"></i> @TempData["ErrorMessage"]
+        </div>
+    }
+
+    @if (TempData["WarningMessage"] != null)
+    {
+        <div class="alert alert-warning">
+            <i class="bi bi-exclamation-circle"></i> @TempData["WarningMessage"]
+        </div>
+    }
+
+    <div class="info-box">
+        <p>Заполните все обязательные поля (отмечены звёздочкой *)</p>
+        <p>Дата найма не может быть в будущем</p>
+        <p>Комиссия должна быть от 0 до 100%</p>
+    </div>
+
+    <form method="post" action="/Realtor/Create">
+        @Html.AntiForgeryToken()
+
+        <div class="form-grid">
+            <div class="form-group">
+                <label class="required">ФИО риэлтора</label>
+                <input type="text" name="full_name" value="@(Model?.full_name ?? "")" class="form-control"
+                       placeholder="Введите полное имя" required />
+            </div>
+
+            <div class="form-group">
+                <label class="required">Телефон</label>
+                <input type="tel" name="phone_number" value="@(Model?.phone_number ?? "")" class="form-control"
+                       placeholder="+7 (999) 123-45-67" required />
+            </div>
+
+            <div class="form-group">
+                <label class="required">Email</label>
+                <input type="email" name="email" value="@(Model?.email ?? "")" class="form-control"
+                       placeholder="realtor@example.com" required />
+            </div>
+
+            <div class="form-group">
+                <label class="required">Дата найма</label>
+                <input type="date" name="hire_date" value="@(Model?.hire_date != default(DateTime) ? Model.hire_date.ToString("yyyy-MM-dd") : DateTime.Now.ToString("yyyy-MM-dd"))"
+                       class="form-control" max="@DateTime.Now.ToString("yyyy-MM-dd")" required />
+            </div>
+
+            <div class="form-group">
+                <label class="required">Комиссия (%)</label>
+                <input type="number" name="commission_rate" value="@(Model?.commission_rate != default(decimal) ? Model.commission_rate.ToString() : "5.0")" class="form-control"
+                       placeholder="5.0" min="0" max="100" step="0.01" required />
+            </div>
+        </div>
+
+        <div class="required-hint">Обязательные для заполнения поля</div>
+
+        <div class="button-group">
+            <button type="submit" class="btn btn-primary">
+                <i class="bi bi-save"></i> Создать риэлтора
+            </button>
+
+            <a href="/Realtor" class="btn btn-secondary">
+                <i class="bi bi-arrow-left"></i> Назад к списку
+            </a>
+        </div>
+    </form>
+</div>
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css">
+
+<script>
+    // Автоформатирование телефона
+    document.addEventListener('DOMContentLoaded', function() {
+        const phoneInput = document.querySelector('input[name="phone_number"]');
+        if (phoneInput) {
+            phoneInput.addEventListener('input', function(e) {
+                let value = e.target.value.replace(/\D/g, '');
+
+                if (value.length > 0) {
+                    if (value.length <= 3) {
+                        value = `+${value}`;
+                    } else if (value.length <= 6) {
+                        value = `+${value.substring(0,3)} (${value.substring(3)}`;
+                    } else if (value.length <= 8) {
+                        value = `+${value.substring(0,3)} (${value.substring(3,6)}) ${value.substring(6)}`;
+                    } else {
+                        value = `+${value.substring(0,3)} (${value.substring(3,6)}) ${value.substring(6,8)}-${value.substring(8,10)}-${value.substring(10)}`;
+                    }
+                }
+
+                e.target.value = value.substring(0, 20);
+            });
+        }
+
+        // Валидация при отправке формы
+        document.querySelector('form').addEventListener('submit', function(e) {
+            const hireDate = new Date(document.querySelector('input[name="hire_date"]').value);
+            const today = new Date();
+            today.setHours(0, 0, 0, 0);
+
+            if (hireDate > today) {
+                e.preventDefault();
+                alert('Дата найма не может быть в будущем');
+                return false;
+            }
+
+            const commissionRate = parseFloat(document.querySelector('input[name="commission_rate"]').value);
+            if (isNaN(commissionRate) || commissionRate < 0 || commissionRate > 100) {
+                e.preventDefault();
+                alert('Комиссия должна быть от 0 до 100%');
+                return false;
+            }
+
+            return true;
+        });
+    });
+</script>
+

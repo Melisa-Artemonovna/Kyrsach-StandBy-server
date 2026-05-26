@@ -1,0 +1,6 @@
+@Kourse_project_BD_vav_HostAddress = http://localhost:5120
+
+GET {{Kourse_project_BD_vav_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###

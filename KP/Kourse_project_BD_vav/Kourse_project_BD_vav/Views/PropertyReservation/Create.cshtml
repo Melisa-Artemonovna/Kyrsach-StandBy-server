@@ -1,0 +1,174 @@
+﻿@model Kourse_project_BD_vav.Models.Property
+@{
+    ViewData["Title"] = ViewBag.IsEdit ? "Редактирование объекта" : "Добавление недвижимости";
+    var isEdit = ViewBag.IsEdit as bool? ?? false;
+    var propertyTypes = ViewBag.PropertyTypes as List<string> ?? new List<string> { "Квартира", "Дом", "Офис" };
+}
+
+<div class="container mt-4">
+    <h1 class="mb-4">@ViewData["Title"]</h1>
+
+    @if (TempData["SuccessMessage"] != null)
+    {
+        <div class="alert alert-success alert-dismissible fade show" role="alert">
+            @TempData["SuccessMessage"]
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+    }
+
+    @if (TempData["ErrorMessage"] != null)
+    {
+        <div class="alert alert-danger alert-dismissible fade show" role="alert">
+            @TempData["ErrorMessage"]
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+    }
+
+    <div class="card">
+        <div class="card-body">
+            <form asp-controller="Property" asp-action="Create" method="post" enctype="multipart/form-data">
+                @Html.AntiForgeryToken()
+
+                <!-- Скрытые поля -->
+                <input type="hidden" asp-for="property_id" />
+                <input type="hidden" asp-for="realtor_id" />
+
+                <div asp-validation-summary="ModelOnly" class="alert alert-danger"></div>
+
+                <div class="row">
+                    <!-- Левый столбец -->
+                    <div class="col-md-6">
+                        <div class="mb-3">
+                            <label asp-for="address" class="form-label">Адрес *</label>
+                            <input asp-for="address" class="form-control" required />
+                            <span asp-validation-for="address" class="text-danger"></span>
+                        </div>
+
+                        <div class="mb-3">
+                            <label asp-for="property_type" class="form-label">Тип недвижимости *</label>
+                            <select asp-for="property_type" class="form-select" required>
+                                <option value="">-- Выберите тип --</option>
+                                @foreach (var type in propertyTypes)
+                                {
+                                    <option value="@type">@type</option>
+                                }
+                            </select>
+                            <span asp-validation-for="property_type" class="text-danger"></span>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="mb-3">
+                                    <label asp-for="area" class="form-label">Площадь (м²) *</label>
+                                    <input asp-for="area" class="form-control" type="number" step="0.01" min="0.1" required />
+                                    <span asp-validation-for="area" class="text-danger"></span>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="mb-3">
+                                    <label asp-for="price" class="form-label">Цена (руб.) *</label>
+                                    <input asp-for="price" class="form-control" type="number" min="1" required />
+                                    <span asp-validation-for="price" class="text-danger"></span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="mb-3">
+                                    <label asp-for="rooms" class="form-label">Количество комнат</label>
+                                    <input asp-for="rooms" class="form-control" type="number" min="0" max="50" />
+                                    <span asp-validation-for="rooms" class="text-danger"></span>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="mb-3">
+                                    <label asp-for="floor" class="form-label">Этаж</label>
+                                    <input asp-for="floor" class="form-control" type="number" min="0" max="200" />
+                                    <span asp-validation-for="floor" class="text-danger"></span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="mb-3">
+                            <label asp-for="total_floors" class="form-label">Всего этажей</label>
+                            <input asp-for="total_floors" class="form-control" type="number" min="1" max="200" />
+                            <span asp-validation-for="total_floors" class="text-danger"></span>
+                        </div>
+                    </div>
+
+                    <!-- Правый столбец -->
+                    <div class="col-md-6">
+                        <div class="mb-3">
+                            <label asp-for="main_image_url" class="form-label">URL основного фото</label>
+                            <input asp-for="main_image_url" class="form-control" />
+                            <small class="text-muted">Вставьте ссылку на основное изображение</small>
+                            <span asp-validation-for="main_image_url" class="text-danger"></span>
+                        </div>
+
+                        <div class="mb-3">
+                            <label asp-for="image_urls" class="form-label">Дополнительные фото (JSON)</label>
+                            <textarea asp-for="image_urls" class="form-control" rows="3"></textarea>
+                            <small class="text-muted">Введите JSON массив ссылок на фото: ["url1", "url2", "url3"]</small>
+                            <span asp-validation-for="image_urls" class="text-danger"></span>
+                        </div>
+
+                        <div class="mb-3">
+                            <label asp-for="description" class="form-label">Описание</label>
+                            <textarea asp-for="description" class="form-control" rows="5"></textarea>
+                            <span asp-validation-for="description" class="text-danger"></span>
+                        </div>
+
+                        @if (isEdit)
+                        {
+                            <div class="form-check mb-3">
+                                <input asp-for="is_available" class="form-check-input" type="checkbox" />
+                                <label asp-for="is_available" class="form-check-label">Объект доступен</label>
+                            </div>
+                        }
+                        else
+                        {
+                            <input type="hidden" asp-for="is_available" value="true" />
+                        }
+                    </div>
+                </div>
+
+                <div class="d-flex justify-content-between mt-4">
+                    <a asp-action="Index" class="btn btn-secondary">
+                        <i class="bi bi-arrow-left"></i> Назад к списку
+                    </a>
+                    <button type="submit" class="btn btn-primary">
+                        @if (isEdit)
+                        {
+                            <text>
+                                <i class="bi bi-check-circle"></i> Сохранить изменения
+                            </text>
+                        }
+                        else
+                        {
+                            <text>
+                                <i class="bi bi-plus-circle"></i> Создать объект
+                            </text>
+                        }
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css">
+
+    <script>
+        $(document).ready(function() {
+            // Автоподстановка формата JSON для дополнительных фото
+            $('#image_urls').focus(function() {
+                if (!$(this).val()) {
+                    $(this).val('["", "", ""]');
+                }
+            });
+        });
+    </script>
+}

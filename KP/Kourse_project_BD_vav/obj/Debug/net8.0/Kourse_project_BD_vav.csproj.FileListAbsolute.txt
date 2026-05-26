@@ -1,0 +1,10 @@
+D:\5 sem\KP\Kourse_project_BD_vav\obj\Debug\net8.0\Kourse_project_BD_vav.csproj.AssemblyReference.cache
+D:\5 sem\KP\Kourse_project_BD_vav\obj\Debug\net8.0\rpswa.dswa.cache.json
+D:\5 sem\KP\Kourse_project_BD_vav\obj\Debug\net8.0\Kourse_project_BD_vav.GeneratedMSBuildEditorConfig.editorconfig
+D:\5 sem\KP\Kourse_project_BD_vav\obj\Debug\net8.0\Kourse_project_BD_vav.AssemblyInfoInputs.cache
+D:\5 sem\KP\Kourse_project_BD_vav\obj\Debug\net8.0\Kourse_project_BD_vav.AssemblyInfo.cs
+D:\5 sem\KP\Kourse_project_BD_vav\obj\Debug\net8.0\Kourse_project_BD_vav.csproj.CoreCompileInputs.cache
+D:\5 sem\KP\Kourse_project_BD_vav\obj\Debug\net8.0\Kourse_project_BD_vav.MvcApplicationPartsAssemblyInfo.cs
+D:\5 sem\KP\Kourse_project_BD_vav\obj\Debug\net8.0\Kourse_project_BD_vav.MvcApplicationPartsAssemblyInfo.cache
+D:\5 sem\KP\Kourse_project_BD_vav\obj\Debug\net8.0\Kourse_project_BD_vav.RazorAssemblyInfo.cache
+D:\5 sem\KP\Kourse_project_BD_vav\obj\Debug\net8.0\Kourse_project_BD_vav.RazorAssemblyInfo.cs

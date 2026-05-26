@@ -1,0 +1,15 @@
+[
+  {
+    "deal_id": 1,
+    "property_id": 1,
+    "client_id": 1,
+    "realtor_id": 1,
+    "deal_type": "Продажа",
+    "deal_status": "Завершена",
+    "deal_date": "2025-11-17T00:00:00",
+    "deal_price": 5000000.00,
+    "property": null,
+    "client": null,
+    "realtor": null
+  }
+]

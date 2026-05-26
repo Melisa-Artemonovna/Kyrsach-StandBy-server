@@ -1,0 +1,410 @@
+﻿@model List<Kourse_project_BD_vav.Models.Deal>
+@{
+    ViewData["Title"] = "Мои сделки";
+}
+
+<!DOCTYPE html>
+<html>
+<head>
+    <title>@ViewData["Title"]</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #e0e0e0 0%, #bdbdbd 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .deals-container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        @@keyframes slideDown {
+            from {
+                opacity: 0;
+                transform: translateY(-20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* Шапка */
+        .deals-header {
+            background: white;
+            color: #343a40;
+            padding: 40px;
+            border-radius: 15px;
+            margin-bottom: 30px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+            text-align: center;
+            animation: slideDown 0.5s ease;
+        }
+
+        .deals-header h1 {
+            font-size: 36px;
+            margin: 0 0 10px 0;
+            color: #343a40;
+        }
+
+        .deals-header p {
+            font-size: 18px;
+            color: #6c757d;
+            margin: 0;
+        }
+
+        /* Уведомления */
+        .alert {
+            padding: 15px 20px;
+            border-radius: 10px;
+            margin-bottom: 20px;
+            font-weight: 500;
+            animation: slideDown 0.5s ease;
+        }
+
+        .alert-success {
+            background: #d4edda;
+            color: #155724;
+            border: 1px solid #c3e6cb;
+        }
+
+        .alert-error {
+            background: #f8d7da;
+            color: #721c24;
+            border: 1px solid #f5c6cb;
+        }
+
+        /* Карточки сделок */
+        .deal-card {
+            background: white;
+            border-radius: 15px;
+            padding: 25px;
+            margin-bottom: 20px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+            border-left: 5px solid #6c757d;
+            transition: all 0.3s ease;
+            animation: slideDown 0.7s ease;
+        }
+
+        .deal-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 25px rgba(0,0,0,0.2);
+        }
+
+        .deal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+            padding-bottom: 15px;
+            border-bottom: 1px solid #e9ecef;
+        }
+
+        .deal-id {
+            font-weight: 600;
+            color: #343a40;
+            font-size: 20px;
+        }
+
+        .deal-date {
+            color: #6c757d;
+            font-size: 14px;
+            background: #f8f9fa;
+            padding: 5px 10px;
+            border-radius: 5px;
+        }
+
+        .deal-info {
+            margin-bottom: 15px;
+        }
+
+        .deal-info .info-row {
+            display: flex;
+            align-items: center;
+            margin: 8px 0;
+        }
+
+        .deal-info strong {
+            min-width: 120px;
+            color: #495057;
+        }
+
+        .deal-info span {
+            color: #6c757d;
+        }
+
+        .deal-price {
+            font-size: 24px;
+            font-weight: 700;
+            color: #6c757d;
+            margin: 15px 0;
+            padding: 10px;
+            background: #f8f9fa;
+            border-radius: 5px;
+            text-align: center;
+        }
+
+        .deal-status {
+            display: inline-block;
+            padding: 5px 15px;
+            border-radius: 20px;
+            font-size: 14px;
+            font-weight: 600;
+            margin-bottom: 15px;
+        }
+
+        .status-active {
+            background: #d4edda;
+            color: #155724;
+        }
+
+        .status-completed {
+            background: #d1ecf1;
+            color: #0c5460;
+        }
+
+        .status-pending {
+            background: #fff3cd;
+            color: #856404;
+        }
+
+        .property-link {
+            background: #f8f9fa;
+            color: #495057;
+            padding: 8px 15px;
+            border-radius: 5px;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            transition: all 0.3s ease;
+            border: 2px solid #e9ecef;
+        }
+
+        .property-link:hover {
+            background: #e9ecef;
+            transform: translateY(-2px);
+            text-decoration: none;
+            color: #343a40;
+        }
+
+        /* Пустое состояние */
+        .empty-state {
+            text-align: center;
+            padding: 60px 20px;
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+            margin: 20px 0;
+            animation: slideDown 0.8s ease;
+        }
+
+        .empty-state-icon {
+            font-size: 64px;
+            margin-bottom: 20px;
+            opacity: 0.5;
+            color: #6c757d;
+        }
+
+        .empty-state h3 {
+            color: #6c757d;
+            margin: 0 0 15px 0;
+            font-size: 24px;
+        }
+
+        .empty-state p {
+            color: #6c757d;
+            max-width: 500px;
+            margin: 0 auto 25px;
+            line-height: 1.6;
+        }
+
+        /* Кнопки */
+        .btn {
+            padding: 12px 25px;
+            border-radius: 10px;
+            font-weight: 600;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            border: none;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-size: 15px;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, #6c757d, #495057);
+            color: white;
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 6px 20px rgba(108, 117, 125, 0.4);
+        }
+
+        .btn-back {
+            background: #f8f9fa;
+            color: #495057;
+            border: 2px solid #e9ecef;
+        }
+
+        .btn-back:hover {
+            background: #e9ecef;
+            transform: translateY(-2px);
+        }
+    </style>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css">
+</head>
+<body>
+    <div class="deals-container">
+        <div class="deals-header">
+            <h1>Мои сделки</h1>
+            <p>Все сделки, связанные с вами</p>
+        </div>
+
+        <!-- Уведомления -->
+        @if (TempData["SuccessMessage"] != null)
+        {
+            <div class="alert alert-success">
+                <i class="bi bi-check-circle"></i> @TempData["SuccessMessage"]
+            </div>
+        }
+
+        @if (TempData["ErrorMessage"] != null)
+        {
+            <div class="alert alert-error">
+                <i class="bi bi-exclamation-triangle"></i> @TempData["ErrorMessage"]
+            </div>
+        }
+
+        @if (Model == null || !Model.Any())
+        {
+            <div class="empty-state">
+                <div class="empty-state-icon">
+                    <i class="bi bi-briefcase"></i>
+                </div>
+                <h3>У вас пока нет сделок</h3>
+                <p>
+                    Сделки появятся здесь после того, как вы заключите договор
+                    с риэлтором или администратором по покупке/аренде недвижимости.
+                </p>
+                <div style="display: flex; gap: 15px; justify-content: center; margin-top: 25px;">
+                    <a href="/Property/Index" class="btn btn-primary">
+                        <i class="bi bi-search"></i> Найти недвижимость
+                    </a>
+                    <a href="/Home/Dashboard" class="btn btn-back">
+                        <i class="bi bi-arrow-left"></i> Назад в панель
+                    </a>
+                </div>
+            </div>
+        }
+        else
+        {
+            <div class="deals-list">
+                @foreach (var deal in Model)
+                {
+                    <div class="deal-card">
+                        <div class="deal-header">
+                            <div class="deal-id">Сделка #@deal.deal_id</div>
+                            <div class="deal-date">@deal.deal_date.ToString("dd.MM.yyyy HH:mm")</div>
+                        </div>
+
+                        <div class="deal-status @(deal.deal_status == "Завершена" ? "status-completed" :
+                                                                     deal.deal_status == "В обработке" ? "status-pending" : "status-active")">
+                            @deal.deal_status
+                        </div>
+
+                        <div class="deal-price">@deal.deal_price.ToString("C")</div>
+
+                        <div class="deal-info">
+                            <div class="info-row">
+                                <strong>Тип сделки:</strong>
+                                <span>@deal.deal_type</span>
+                            </div>
+
+                            @if (deal.property != null)
+                            {
+                                <div class="info-row">
+                                    <strong>Объект:</strong>
+                                    <a href="/Property/Details/@deal.property_id" class="property-link">
+                                        @deal.property.address
+                                    </a>
+                                </div>
+                            }
+
+                            @if (deal.realtor != null)
+                            {
+                                <div class="info-row">
+                                    <strong>Риэлтор:</strong>
+                                    <span>@deal.realtor.full_name</span>
+                                </div>
+                                <div class="info-row">
+                                    <strong>Телефон риэлтора:</strong>
+                                    <span>@deal.realtor.phone_number</span>
+                                </div>
+                            }
+
+                            <div class="info-row">
+                                <strong>Дата создания:</strong>
+                                <span>@deal.deal_date.ToString("dd.MM.yyyy")</span>
+                            </div>
+                        </div>
+
+                        <div style="display: flex; gap: 10px; margin-top: 20px;">
+                            <a href="/Property/Details/@deal.property_id" class="property-link" style="flex: 1; justify-content: center;">
+                                <i class="bi bi-eye"></i> Посмотреть объект
+                            </a>
+                        </div>
+                    </div>
+                }
+            </div>
+
+            <div style="text-align: center; margin-top: 30px;">
+                <a href="/Home/Dashboard" class="btn btn-back">
+                    <i class="bi bi-arrow-left"></i> Назад в панель управления
+                </a>
+            </div>
+        }
+    </div>
+
+    <script>
+        // Автоматическое скрытие уведомлений
+        setTimeout(function() {
+            var alerts = document.querySelectorAll('.alert');
+            alerts.forEach(function(alert) {
+                alert.style.opacity = '0';
+                setTimeout(function() {
+                    if (alert.parentNode) {
+                        alert.parentNode.removeChild(alert);
+                    }
+                }, 300);
+            });
+        }, 5000);
+
+        // Анимация появления карточек
+        document.addEventListener('DOMContentLoaded', function() {
+            const cards = document.querySelectorAll('.deal-card');
+            cards.forEach((card, index) => {
+                card.style.opacity = '0';
+                card.style.transform = 'translateY(20px)';
+
+                setTimeout(() => {
+                    card.style.transition = 'all 0.5s ease';
+                    card.style.opacity = '1';
+                    card.style.transform = 'translateY(0)';
+                }, index * 100);
+            });
+        });
+    </script>
+</body>
+</html>

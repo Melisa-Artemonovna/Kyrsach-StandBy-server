@@ -1,0 +1,375 @@
+@model Kourse_project_BD_vav.Models.User
+@{
+    ViewData["Title"] = "Профиль";
+    var additionalInfo = ViewBag.AdditionalInfo;
+    var userRole = Model?.role ?? "Client";
+}
+
+<!DOCTYPE html>
+<html>
+<head>
+    <title>@ViewData["Title"]</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #e0e0e0 0%, #bdbdbd 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+        }
+
+        @@keyframes slideDown {
+            from {
+                opacity: 0;
+                transform: translateY(-20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* Шапка */
+        .header {
+            background: white;
+            padding: 20px 30px;
+            border-radius: 15px;
+            margin-bottom: 25px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+            border-left: 5px solid #6c757d;
+            animation: slideDown 0.5s ease;
+        }
+
+        .back-btn {
+            padding: 10px 20px;
+            background: #f8f9fa;
+            color: #495057;
+            text-decoration: none;
+            border-radius: 8px;
+            font-weight: 600;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            transition: all 0.3s ease;
+        }
+
+        .back-btn:hover {
+            background: #e9ecef;
+            transform: translateX(-3px);
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+
+        /* Карточки */
+        .card {
+            background: white;
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 4px 30px rgba(0,0,0,0.1);
+            margin-bottom: 25px;
+            animation: slideDown 0.7s ease;
+        }
+
+        .card-header {
+            background: #343a40;
+            color: white;
+            padding: 20px;
+            font-weight: 600;
+            font-size: 18px;
+        }
+
+        .card-body {
+            padding: 25px;
+        }
+
+        /* Информация */
+        .info-section {
+            margin-bottom: 25px;
+        }
+
+        .info-section:last-child {
+            margin-bottom: 0;
+        }
+
+        .info-section h4 {
+            color: #343a40;
+            margin-bottom: 15px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid #e9ecef;
+        }
+
+        .info-row {
+            display: flex;
+            align-items: center;
+            padding: 12px 0;
+            border-bottom: 1px solid #f8f9fa;
+        }
+
+        .info-row:last-child {
+            border-bottom: none;
+        }
+
+        .info-label {
+            min-width: 180px;
+            font-weight: 600;
+            color: #495057;
+        }
+
+        .info-value {
+            color: #6c757d;
+            flex: 1;
+        }
+
+        .badge {
+            padding: 5px 12px;
+            border-radius: 12px;
+            font-size: 12px;
+            font-weight: 600;
+            display: inline-block;
+        }
+
+        .badge-primary {
+            background: #6c757d;
+            color: white;
+        }
+
+        .badge-success {
+            background: #28a745;
+            color: white;
+        }
+
+        .badge-info {
+            background: #17a2b8;
+            color: white;
+        }
+
+        /* Кнопки */
+        .btn {
+            padding: 12px 25px;
+            border-radius: 10px;
+            font-weight: 600;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            border: none;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-size: 15px;
+            margin-right: 10px;
+            margin-top: 10px;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, #6c757d, #495057);
+            color: white;
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 6px 20px rgba(108, 117, 125, 0.4);
+        }
+
+        /* Уведомления */
+        .alert {
+            padding: 15px 20px;
+            border-radius: 10px;
+            margin-bottom: 20px;
+            font-weight: 500;
+            animation: slideDown 0.5s ease;
+        }
+
+        .alert-error {
+            background: #f8d7da;
+            color: #721c24;
+            border: 1px solid #f5c6cb;
+        }
+
+        h1, h2, h3, h4, h5, h6 {
+            color: #343a40;
+            font-weight: 700;
+        }
+    </style>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css">
+</head>
+<body>
+    <div class="container">
+        <!-- Шапка -->
+        <div class="header">
+            <h1 style="margin: 0; color: #343a40; display: flex; align-items: center; gap: 10px;">
+                <i class="bi bi-person-circle"></i> Профиль пользователя
+            </h1>
+            <a href="/Home/Dashboard" class="back-btn">
+                <i class="bi bi-arrow-left"></i> Назад в кабинет
+            </a>
+        </div>
+
+        <!-- Уведомления -->
+        @if (TempData["ErrorMessage"] != null)
+        {
+            <div class="alert alert-error">
+                <i class="bi bi-exclamation-triangle"></i> @TempData["ErrorMessage"]
+            </div>
+        }
+
+        @if (Model != null)
+        {
+            <!-- Основная информация -->
+            <div class="card">
+                <div class="card-header">Основная информация</div>
+                <div class="card-body">
+                    <div class="info-section">
+                        <div class="info-row">
+                            <span class="info-label">ID пользователя:</span>
+                            <span class="info-value">@Model.user_id</span>
+                        </div>
+                        <div class="info-row">
+                            <span class="info-label">Полное имя:</span>
+                            <span class="info-value">@Model.full_name</span>
+                        </div>
+                        <div class="info-row">
+                            <span class="info-label">Имя пользователя:</span>
+                            <span class="info-value">@Model.username</span>
+                        </div>
+                        <div class="info-row">
+                            <span class="info-label">Email:</span>
+                            <span class="info-value">@(Model.email ?? "-")</span>
+                        </div>
+                        <div class="info-row">
+                            <span class="info-label">Роль:</span>
+                            <span class="info-value">
+                                <span class="badge badge-primary">@userRole</span>
+                            </span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Дополнительная информация в зависимости от роли -->
+            @if (userRole == "Client" && additionalInfo != null)
+            {
+                <div class="card">
+                    <div class="card-header">Информация о клиенте</div>
+                    <div class="card-body">
+                        <div class="info-section">
+                            @if (additionalInfo is Kourse_project_BD_vav.Models.Client client)
+                            {
+                                <div class="info-row">
+                                    <span class="info-label">ID клиента:</span>
+                                    <span class="info-value">@client.client_id</span>
+                                </div>
+                                <div class="info-row">
+                                    <span class="info-label">Телефон:</span>
+                                    <span class="info-value">@(client.phone_number ?? "-")</span>
+                                </div>
+                                <div class="info-row">
+                                    <span class="info-label">Паспорт:</span>
+                                    <span class="info-value">@(client.passport_number ?? "-")</span>
+                                </div>
+                                <div class="info-row">
+                                    <span class="info-label">Дата регистрации:</span>
+                                    <span class="info-value">@client.registration_date.ToString("dd.MM.yyyy")</span>
+                                </div>
+                            }
+                        </div>
+                    </div>
+                </div>
+            }
+
+            @if (userRole == "Realtor" && additionalInfo != null)
+            {
+                <div class="card">
+                    <div class="card-header">Информация о риэлторе</div>
+                    <div class="card-body">
+                        <div class="info-section">
+                            @if (additionalInfo is Kourse_project_BD_vav.Models.Realtor realtor)
+                            {
+                                <div class="info-row">
+                                    <span class="info-label">ID риэлтора:</span>
+                                    <span class="info-value">@realtor.realtor_id</span>
+                                </div>
+                                <div class="info-row">
+                                    <span class="info-label">Телефон:</span>
+                                    <span class="info-value">@(realtor.phone_number ?? "-")</span>
+                                </div>
+                                <div class="info-row">
+                                    <span class="info-label">Email:</span>
+                                    <span class="info-value">@(realtor.email ?? "-")</span>
+                                </div>
+                                <div class="info-row">
+                                    <span class="info-label">Дата найма:</span>
+                                    <span class="info-value">@realtor.hire_date.ToString("dd.MM.yyyy")</span>
+                                </div>
+                                <div class="info-row">
+                                    <span class="info-label">Комиссия:</span>
+                                    <span class="info-value">@realtor.commission_rate.ToString("P2")</span>
+                                </div>
+                            }
+                        </div>
+                    </div>
+                </div>
+            }
+
+            @if (userRole == "Admin")
+            {
+                <div class="card">
+                    <div class="card-header">Администратор</div>
+                    <div class="card-body">
+                        <div class="info-section">
+                            <p style="color: #6c757d; margin-bottom: 15px;">
+                                Вы имеете полный доступ к системе управления недвижимостью.
+                            </p>
+                            <div style="display: flex; gap: 10px; flex-wrap: wrap;">
+                                <a href="/Home/Dashboard" class="btn btn-primary">
+                                    <i class="bi bi-speedometer2"></i> Панель управления
+                                </a>
+                                <a href="/Home/Sync" class="btn btn-primary">
+                                    <i class="bi bi-arrow-repeat"></i> Синхронизация
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            }
+        }
+        else
+        {
+            <div class="card">
+                <div class="card-body">
+                    <div class="alert alert-error">
+                        <i class="bi bi-exclamation-triangle"></i> Пользователь не найден
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+
+    <script>
+        // Автоматическое скрытие уведомлений
+        setTimeout(function() {
+            var alerts = document.querySelectorAll('.alert');
+            alerts.forEach(function(alert) {
+                alert.style.opacity = '0';
+                setTimeout(function() {
+                    if (alert.parentNode) {
+                        alert.parentNode.removeChild(alert);
+                    }
+                }, 300);
+            });
+        }, 5000);
+    </script>
+</body>
+</html>
+

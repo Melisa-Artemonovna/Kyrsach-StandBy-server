@@ -1,0 +1,627 @@
+﻿@model Kourse_project_BD_vav.Models.Client
+@{
+    ViewData["Title"] = "Редактирование клиента";
+}
+
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"]</title>
+    <style>
+        /* Базовые стили */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+
+        /* Контейнер формы */
+        .form-container {
+            width: 100%;
+            max-width: 600px;
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            overflow: hidden;
+        }
+
+        /* Шапка формы */
+        .form-header {
+            background: linear-gradient(135deg, #3498db 0%, #2980b9 100%);
+            color: white;
+            padding: 30px;
+            text-align: center;
+            position: relative;
+        }
+
+            .form-header::before {
+                content: '👤';
+                font-size: 40px;
+                display: block;
+                margin-bottom: 10px;
+            }
+
+        .form-title {
+            font-size: 28px;
+            font-weight: 700;
+            letter-spacing: 0.5px;
+        }
+
+        .client-id {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            background: rgba(255, 255, 255, 0.2);
+            padding: 5px 15px;
+            border-radius: 20px;
+            font-size: 14px;
+            font-weight: 600;
+            backdrop-filter: blur(10px);
+        }
+
+        /* Уведомления */
+        .notifications {
+            padding: 0 30px;
+        }
+
+        .alert {
+            padding: 15px;
+            margin: 20px 0;
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-weight: 500;
+            animation: slideDown 0.3s ease;
+        }
+
+        .alert-success {
+            background: linear-gradient(135deg, #2ecc71 0%, #27ae60 100%);
+            color: white;
+        }
+
+        .alert-error {
+            background: linear-gradient(135deg, #e74c3c 0%, #c0392b 100%);
+            color: white;
+        }
+
+        .alert-warning {
+            background: linear-gradient(135deg, #f39c12 0%, #d68910 100%);
+            color: white;
+        }
+
+        .alert::before {
+            font-size: 18px;
+            font-weight: bold;
+        }
+
+        .alert-success::before {
+            content: '✓';
+        }
+
+        .alert-error::before {
+            content: '✗';
+        }
+
+        .alert-warning::before {
+            content: '⚠';
+        }
+
+        /* Тело формы */
+        .form-body {
+            padding: 30px;
+        }
+
+        /* Поля формы */
+        .form-group {
+            margin-bottom: 25px;
+            position: relative;
+        }
+
+        .form-label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+            color: #2c3e50;
+            font-size: 14px;
+        }
+
+            .form-label.required::after {
+                content: ' *';
+                color: #e74c3c;
+            }
+
+        .form-input {
+            width: 100%;
+            padding: 15px 20px;
+            border: 2px solid #e0e6ed;
+            border-radius: 12px;
+            font-size: 16px;
+            font-family: inherit;
+            transition: all 0.3s ease;
+            background: #f8fafc;
+        }
+
+            .form-input:focus {
+                outline: none;
+                border-color: #3498db;
+                background: white;
+                box-shadow: 0 0 0 4px rgba(52, 152, 219, 0.1);
+                transform: translateY(-2px);
+            }
+
+            .form-input:hover {
+                border-color: #bdc3c7;
+            }
+
+        /* Сетка для полей */
+        .form-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+        }
+
+      
+        {
+            grid-template-columns: 1fr;
+        }
+
+        }
+
+        /* Кнопки */
+        .form-actions {
+            display: flex;
+            gap: 15px;
+            margin-top: 40px;
+            padding-top: 30px;
+            border-top: 1px solid #eef2f7;
+            flex-wrap: wrap;
+        }
+
+        .btn {
+            padding: 16px 32px;
+            border: none;
+            border-radius: 12px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            text-decoration: none;
+            min-width: 160px;
+            position: relative;
+            overflow: hidden;
+            flex: 1;
+        }
+
+            .btn::after {
+                content: '';
+                position: absolute;
+                top: 50%;
+                left: 50%;
+                width: 0;
+                height: 0;
+                border-radius: 50%;
+                background: rgba(255, 255, 255, 0.2);
+                transform: translate(-50%, -50%);
+                transition: width 0.4s, height 0.4s;
+            }
+
+            .btn:hover::after {
+                width: 300px;
+                height: 300px;
+            }
+
+        .btn-primary {
+            background: linear-gradient(135deg, #3498db 0%, #2980b9 100%);
+            color: white;
+            box-shadow: 0 6px 20px rgba(52, 152, 219, 0.3);
+        }
+
+            .btn-primary:hover {
+                background: linear-gradient(135deg, #2980b9 0%, #1c6ea4 100%);
+                transform: translateY(-3px);
+                box-shadow: 0 10px 25px rgba(52, 152, 219, 0.4);
+            }
+
+        .btn-secondary {
+            background: linear-gradient(135deg, #95a5a6 0%, #7f8c8d 100%);
+            color: white;
+            box-shadow: 0 6px 20px rgba(149, 165, 166, 0.3);
+        }
+
+            .btn-secondary:hover {
+                background: linear-gradient(135deg, #7f8c8d 0%, #6c7b7d 100%);
+                transform: translateY(-3px);
+                box-shadow: 0 10px 25px rgba(127, 140, 141, 0.4);
+            }
+
+        .btn-danger {
+            background: linear-gradient(135deg, #e74c3c 0%, #c0392b 100%);
+            color: white;
+            box-shadow: 0 6px 20px rgba(231, 76, 60, 0.3);
+        }
+
+            .btn-danger:hover {
+                background: linear-gradient(135deg, #c0392b 0%, #a93226 100%);
+                transform: translateY(-3px);
+                box-shadow: 0 10px 25px rgba(192, 57, 43, 0.4);
+            }
+
+        .btn-icon {
+            font-size: 18px;
+            filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.1));
+        }
+
+        /* Инфо блок */
+        .info-box {
+            background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+            border-left: 5px solid #3498db;
+            padding: 20px;
+            margin: 25px 0;
+            border-radius: 10px;
+        }
+
+            .info-box p {
+                margin: 8px 0;
+                color: #2c3e50;
+                font-size: 14px;
+                display: flex;
+                align-items: center;
+                gap: 8px;
+            }
+
+                .info-box p::before {
+                    content: 'ℹ️';
+                    font-size: 12px;
+                }
+
+        /* Подсказка обязательных полей */
+        .required-hint {
+            font-size: 13px;
+            color: #7f8c8d;
+            margin-top: 5px;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+            .required-hint::before {
+                content: '*';
+                color: #e74c3c;
+                font-weight: bold;
+                font-size: 16px;
+            }
+
+ 
+        {
+            opacity: 0;
+            transform: translateY(-20px);
+        }
+
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        }
+
+
+        {
+            transform: scale(1);
+        }
+
+        50% {
+            transform: scale(1.05);
+        }
+
+        100% {
+            transform: scale(1);
+        }
+
+        }
+
+        /* Стили для placeholder */
+        ::placeholder {
+            color: #95a5a6;
+            opacity: 0.7;
+        }
+
+        /* Загрузка */
+        .loading {
+            display: none;
+            text-align: center;
+            padding: 20px;
+        }
+
+        .spinner {
+            width: 40px;
+            height: 40px;
+            border: 4px solid #f3f3f3;
+            border-top: 4px solid #3498db;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin: 0 auto;
+        }
+
+      
+
+        {
+            transform: rotate(0deg);
+        }
+
+        100% {
+            transform: rotate(360deg);
+        }
+
+        }
+    </style>
+</head>
+<body>
+    <div class="form-container">
+        <!-- Шапка -->
+        <div class="form-header">
+            <div class="client-id">ID: #@Model.client_id</div>
+            <div class="form-title">Редактирование клиента</div>
+        </div>
+
+        <!-- Уведомления -->
+        <div class="notifications">
+            @if (TempData["SuccessMessage"] != null)
+            {
+                <div class="alert alert-success">
+                    @TempData["SuccessMessage"]
+                </div>
+            }
+
+            @if (TempData["ErrorMessage"] != null)
+            {
+                <div class="alert alert-error">
+                    @TempData["ErrorMessage"]
+                </div>
+            }
+
+            @if (TempData["WarningMessage"] != null)
+            {
+                <div class="alert alert-warning">
+                    @TempData["WarningMessage"]
+                </div>
+            }
+        </div>
+
+        <!-- Тело формы -->
+        <div class="form-body">
+            <!-- Инфо блок -->
+            <div class="info-box">
+                <p>Заполните все обязательные поля (отмечены звёздочкой *)</p>
+                <p>Дата регистрации не может быть позже сегодняшней даты</p>
+                <p>Паспортные данные должны содержать 10 цифр</p>
+            </div>
+
+            <!-- Форма -->
+            <form method="post" action="/Client/Edit/@Model.client_id" id="clientForm">
+                @Html.AntiForgeryToken()
+
+                <!-- Скрытые поля -->
+                <input type="hidden" name="client_id" value="@Model.client_id" />
+                <input type="hidden" name="user_id" value="@Model.user_id" />
+
+                <!-- Сетка полей -->
+                <div class="form-grid">
+                    <!-- ФИО -->
+                    <div class="form-group">
+                        <label class="form-label required">ФИО клиента</label>
+                        <input type="text" name="full_name" value="@Model.full_name"
+                               class="form-input" placeholder="Иванов Иван Иванович" required />
+                    </div>
+
+                    <!-- Телефон -->
+                    <div class="form-group">
+                        <label class="form-label">Телефон</label>
+                        <input type="tel" name="phone_number" value="@Model.phone_number"
+                               class="form-input" placeholder="+7 (999) 123-45-67" />
+                    </div>
+
+                    <!-- Email -->
+                    <div class="form-group">
+                        <label class="form-label">Email</label>
+                        <input type="email" name="email" value="@Model.email"
+                               class="form-input" placeholder="client@example.com" />
+                    </div>
+
+                    <!-- Паспорт -->
+                    <div class="form-group">
+                        <label class="form-label required">Паспортные данные</label>
+                        <input type="text" name="passport_number" value="@Model.passport_number"
+                               class="form-input" placeholder="4510 123456"
+                               pattern="\d{4}\s?\d{6}" required />
+                    </div>
+
+                    <!-- Дата регистрации -->
+                    <div class="form-group">
+                        <label class="form-label required">Дата регистрации</label>
+                        <input type="date" name="registration_date"
+                               value="@Model.registration_date.ToString("yyyy-MM-dd")"
+                               class="form-input"
+                               max="@DateTime.Now.ToString("yyyy-MM-dd")" required />
+                    </div>
+                </div>
+
+                <!-- Подсказка -->
+                <div class="required-hint">Обязательные для заполнения поля</div>
+
+                <!-- Кнопки -->
+                <div class="form-actions">
+                    <button type="submit" class="btn btn-primary" id="submitBtn">
+                        <span class="btn-icon">💾</span> Сохранить изменения
+                    </button>
+
+                    <a href="/Client" class="btn btn-secondary">
+                        <span class="btn-icon">←</span> Назад к списку
+                    </a>
+
+                    @if (User.IsInRole("Admin"))
+                    {
+                        <button type="button" onclick="confirmDelete()" class="btn btn-danger">
+                            <span class="btn-icon">🗑️</span> Удалить клиента
+                        </button>
+                    }
+                </div>
+            </form>
+
+            <!-- Форма удаления -->
+            @if (User.IsInRole("Admin"))
+            {
+                <form id="deleteForm" method="post" action="/Client/Delete/@Model.client_id" style="display: none;">
+                    @Html.AntiForgeryToken()
+                </form>
+            }
+
+            <!-- Индикатор загрузки -->
+            <div class="loading" id="loading">
+                <div class="spinner"></div>
+                <p style="margin-top: 10px; color: #7f8c8d;">Сохранение изменений...</p>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        console.log("=== ДЕБАГ ИНФО ===");
+        console.log("Client ID:", "@Model.client_id");
+        console.log("Full Name:", "@Model.full_name");
+        console.log("Email:", "@Model.email");
+        console.log("Phone:", "@Model.phone_number");
+
+        // Автоформатирование телефона для Беларуси
+        document.querySelector('input[name="phone_number"]').addEventListener('input', function(e) {
+            let value = e.target.value.replace(/\D/g, '');
+
+            // Если начинается с 375, убираем его
+            if (value.startsWith('375')) {
+                value = value.substring(3);
+            }
+
+            if (value.length > 0) {
+                if (value.length <= 2) {
+                    value = `+375 (${value}`;
+                } else if (value.length <= 4) {
+                    value = `+375 (${value.substring(0,2)}) ${value.substring(2)}`;
+                } else if (value.length <= 7) {
+                    value = `+375 (${value.substring(0,2)}) ${value.substring(2,5)} ${value.substring(5)}`;
+                } else {
+                    value = `+375 (${value.substring(0,2)}) ${value.substring(2,5)} ${value.substring(5,7)} ${value.substring(7,9)}`;
+                }
+            }
+
+            e.target.value = value.substring(0, 19);
+        });
+
+        // Автоформатирование паспорта
+        document.querySelector('input[name="passport_number"]').addEventListener('input', function(e) {
+            let value = e.target.value.replace(/\D/g, '');
+
+            if (value.length > 4) {
+                value = `${value.substring(0,4)} ${value.substring(4)}`;
+            }
+
+            e.target.value = value.substring(0, 11);
+        });
+
+        // Подтверждение удаления
+        function confirmDelete() {
+            const clientName = '@Model.full_name';
+            if (confirm(`Вы уверены, что хотите удалить клиента "${clientName}"?\n\n⚠️ Это действие нельзя отменить. Все связанные данные будут удалены.`)) {
+                document.getElementById('deleteForm').submit();
+            }
+        }
+
+        // Валидация формы
+        document.getElementById('clientForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+
+            const form = this;
+            const submitBtn = document.getElementById('submitBtn');
+            const loading = document.getElementById('loading');
+
+            // Показываем загрузку
+            submitBtn.style.display = 'none';
+            loading.style.display = 'block';
+
+            // Валидация паспорта
+            const passport = form.querySelector('input[name="passport_number"]').value;
+            const passportClean = passport.replace(/\s/g, '');
+
+            if (passportClean.length !== 10) {
+                alert('Паспортные данные должны содержать 10 цифр (например: 4510 123456)');
+                submitBtn.style.display = 'flex';
+                loading.style.display = 'none';
+                return false;
+            }
+
+            // Валидация телефона (белорусский формат)
+            const phoneInput = form.querySelector('input[name="phone_number"]');
+            const phonePattern = /^\+375\s\(\d{2}\)\s\d{3}\s\d{2}\s\d{2}$/;
+
+            // Проверяем только если поле не пустое
+            if (phoneInput.value.trim() !== '' && !phonePattern.test(phoneInput.value)) {
+                alert('Введите телефон в формате: +375 (29) 364 64 83');
+                phoneInput.focus();
+                submitBtn.style.display = 'flex';
+                loading.style.display = 'none';
+                return false;
+            }
+
+            // Валидация даты
+            const registrationDate = new Date(form.querySelector('input[name="registration_date"]').value);
+            const today = new Date();
+            today.setHours(0, 0, 0, 0);
+
+            if (registrationDate > today) {
+                alert('Дата регистрации не может быть позже сегодняшней даты');
+                submitBtn.style.display = 'flex';
+                loading.style.display = 'none';
+                return false;
+            }
+
+            // Анимация кнопки
+            submitBtn.style.animation = 'pulse 0.5s ease';
+
+            // Отправляем форму
+            setTimeout(() => {
+                form.submit();
+            }, 500);
+
+            return true;
+        });
+
+        // Фокус на первом поле
+        document.addEventListener('DOMContentLoaded', function() {
+            const firstInput = document.querySelector('.form-input');
+            if (firstInput) {
+                firstInput.focus();
+            }
+
+            // Дебаг значений
+            console.log("=== ЗНАЧЕНИЯ ПОЛЕЙ ===");
+            document.querySelectorAll('.form-input').forEach(input => {
+                console.log(`${input.name}: ${input.value}`);
+            });
+        });
+    </script>
+</body>
+</html>

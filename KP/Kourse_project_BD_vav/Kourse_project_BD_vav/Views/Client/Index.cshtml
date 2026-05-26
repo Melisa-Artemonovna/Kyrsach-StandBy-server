@@ -1,0 +1,438 @@
+﻿@model List<Kourse_project_BD_vav.Models.Client>
+@{
+    ViewData["Title"] = "Управление клиентами";
+}
+
+<!DOCTYPE html>
+<html>
+<head>
+    <title>@ViewData["Title"]</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #e0e0e0 0%, #bdbdbd 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        /* Шапка */
+        .header {
+            background: white;
+            padding: 20px 30px;
+            border-radius: 15px;
+            margin-bottom: 25px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+            border-left: 5px solid #6c757d;
+            animation: slideDown 0.5s ease;
+        }
+
+        @@keyframes slideDown {
+            from {
+                opacity: 0;
+                transform: translateY(-20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .back-btn {
+            padding: 10px 20px;
+            background: #f8f9fa;
+            color: #495057;
+            text-decoration: none;
+            border-radius: 8px;
+            font-weight: 600;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            transition: all 0.3s ease;
+        }
+
+        .back-btn:hover {
+            background: #e9ecef;
+            transform: translateX(-3px);
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+
+        /* Уведомления */
+        .alert {
+            padding: 15px 20px;
+            border-radius: 10px;
+            margin-bottom: 20px;
+            font-weight: 500;
+            animation: slideDown 0.5s ease;
+        }
+
+        .alert-success {
+            background: #d4edda;
+            color: #155724;
+            border: 1px solid #c3e6cb;
+        }
+
+        .alert-error {
+            background: #f8d7da;
+            color: #721c24;
+            border: 1px solid #f5c6cb;
+        }
+
+        /* Основной контент */
+        .content-card {
+            background: white;
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 4px 30px rgba(0,0,0,0.1);
+            margin-bottom: 30px;
+            animation: slideDown 0.7s ease;
+        }
+
+        /* Таблица */
+        .table-container {
+            overflow-x: auto;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        thead {
+            background: #343a40;
+            color: white;
+        }
+
+        th {
+            padding: 15px;
+            text-align: left;
+            font-weight: 600;
+            text-transform: uppercase;
+            font-size: 12px;
+            letter-spacing: 1px;
+        }
+
+        tbody tr {
+            border-bottom: 1px solid #e9ecef;
+            transition: all 0.2s ease;
+        }
+
+        tbody tr:hover {
+            background: #f8f9fa;
+            transform: scale(1.01);
+        }
+
+        td {
+            padding: 15px;
+        }
+
+        .badge {
+            background: #6c757d;
+            color: white;
+            padding: 4px 10px;
+            border-radius: 12px;
+            font-size: 12px;
+            font-weight: 500;
+        }
+
+        /* Кнопки */
+        .btn {
+            padding: 12px 25px;
+            border-radius: 10px;
+            font-weight: 600;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            border: none;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-size: 15px;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, #6c757d, #495057);
+            color: white;
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 6px 20px rgba(108, 117, 125, 0.4);
+        }
+
+        .btn-secondary {
+            background: #f8f9fa;
+            color: #495057;
+            border: 2px solid #e9ecef;
+        }
+
+        .btn-secondary:hover {
+            background: #e9ecef;
+            transform: translateY(-2px);
+        }
+
+        .btn-danger {
+            background: linear-gradient(135deg, #6c757d, #495057);
+            color: white;
+            padding: 6px 12px;
+            font-size: 13px;
+        }
+
+        .btn-danger:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(108, 117, 125, 0.3);
+        }
+
+        .btn-sm {
+            padding: 8px 16px;
+            font-size: 13px;
+        }
+
+        /* Пустое состояние */
+        .empty-state {
+            background: white;
+            padding: 60px 40px;
+            text-align: center;
+            border-radius: 15px;
+            margin: 40px 0;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+            animation: slideDown 0.8s ease;
+        }
+
+        .empty-icon {
+            font-size: 64px;
+            margin-bottom: 20px;
+            opacity: 0.5;
+        }
+
+        .empty-title {
+            color: #6c757d;
+            margin-bottom: 15px;
+            font-size: 24px;
+        }
+
+        .empty-text {
+            color: #6c757d;
+            max-width: 500px;
+            margin: 0 auto 25px;
+            line-height: 1.6;
+        }
+
+        /* Дополнительные стили */
+        .action-buttons {
+            display: flex;
+            gap: 10px;
+            align-items: center;
+        }
+
+        .client-name {
+            font-weight: 600;
+            color: #2c3e50;
+            font-size: 15px;
+        }
+
+        .phone-cell {
+            font-weight: 500;
+            color: #2c3e50;
+        }
+
+        .email-cell a {
+            color: #495057;
+            text-decoration: none;
+            font-weight: 500;
+        }
+
+        .email-cell a:hover {
+            color: #343a40;
+            text-decoration: underline;
+        }
+
+        .passport-data {
+            font-family: 'Courier New', monospace;
+            background-color: #f8f9fa;
+            padding: 6px 12px;
+            border-radius: 6px;
+            border: 1px solid #e9ecef;
+            font-size: 13px;
+            color: #2c3e50;
+        }
+
+        .client-status {
+            display: inline-block;
+            padding: 6px 14px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            background: #6c757d;
+            color: white;
+        }
+
+        .status-active {
+            background: #6c757d;
+        }
+
+        .status-inactive {
+            background: #95a5a6;
+        }
+
+        .registration-date {
+            color: #6c757d;
+            font-size: 13px;
+        }
+
+        form {
+            margin: 0;
+            display: inline;
+        }
+    </style>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css">
+</head>
+<body>
+    <div class="container">
+        <!-- Шапка -->
+        <div class="header">
+            <h1 style="margin: 0; color: #343a40; display: flex; align-items: center; gap: 10px;">
+                <i class="bi bi-people"></i> Управление клиентами
+            </h1>
+            <a href="/Home/Dashboard" class="back-btn">
+                <i class="bi bi-arrow-left"></i> Назад в кабинет
+            </a>
+        </div>
+
+        <!-- Уведомления -->
+        @if (TempData["SuccessMessage"] != null)
+        {
+            <div class="alert alert-success">
+                <i class="bi bi-check-circle"></i> @TempData["SuccessMessage"]
+            </div>
+        }
+
+        @if (TempData["ErrorMessage"] != null)
+        {
+            <div class="alert alert-error">
+                <i class="bi bi-exclamation-triangle"></i> @TempData["ErrorMessage"]
+            </div>
+        }
+
+        <!-- Кнопка добавления -->
+        @if (User.IsInRole("Admin") || User.IsInRole("Realtor"))
+        {
+            <div style="margin-bottom: 20px;">
+                <a href="/Client/Create" class="btn btn-primary">
+                    <i class="bi bi-plus-circle"></i> Добавить клиента
+                </a>
+            </div>
+        }
+
+        @if (Model == null || !Model.Any())
+        {
+            <div class="empty-state">
+                <div class="empty-icon">
+                    <i class="bi bi-people"></i>
+                </div>
+                <h3 class="empty-title">Клиенты не найдены</h3>
+                <p class="empty-text">
+                    В базе данных пока нет зарегистрированных клиентов.
+                    Добавьте первого клиента, используя кнопку выше.
+                </p>
+                @if (User.IsInRole("Admin") || User.IsInRole("Realtor"))
+                {
+                    <a href="/Client/Create" class="btn btn-primary">
+                        <i class="bi bi-plus-circle"></i> Добавить первого клиента
+                    </a>
+                }
+            </div>
+        }
+        else
+        {
+            <!-- Таблица клиентов -->
+            <div class="content-card">
+                <div class="table-container">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>ID</th>
+                                <th>ФИО</th>
+                                <th>Телефон</th>
+                                <th>Email</th>
+                                <th>Паспорт</th>
+                                <th>Дата регистрации</th>
+                                <th>Статус</th>
+                                <th>Действия</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var client in Model)
+                            {
+                                <tr>
+                                    <td><strong>#@client.client_id</strong></td>
+                                    <td class="client-name">@client.full_name</td>
+                                    <td class="phone-cell">@client.phone_number</td>
+                                    <td class="email-cell">
+                                        <a href="mailto:@client.email" title="Написать письмо">
+                                            @client.email
+                                        </a>
+                                    </td>
+                                    <td>
+                                        <span class="passport-data">@client.passport_number</span>
+                                    </td>
+                                    <td class="registration-date">
+                                        @client.registration_date.ToString("dd.MM.yyyy")
+                                    </td>
+                                    <td>
+                                        @if (client.registration_date.AddYears(1) > DateTime.Now)
+                                        {
+                                            <span class="client-status status-active">Активен</span>
+                                        }
+                                        else
+                                        {
+                                            <span class="client-status status-inactive">Неактивен</span>
+                                        }
+                                    </td>
+                                    <td>
+                                        <div class="action-buttons">
+                                            <a href="/Client/Edit/@client.client_id" class="btn btn-secondary btn-sm">
+                                                <i class="bi bi-pencil"></i> Изменить
+                                            </a>
+                                        </div>
+                                    </td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        }
+    </div>
+
+    <script>
+        // Автоматическое скрытие уведомлений
+        setTimeout(function() {
+            var alerts = document.querySelectorAll('.alert');
+            alerts.forEach(function(alert) {
+                alert.style.opacity = '0';
+                setTimeout(function() {
+                    if (alert.parentNode) {
+                        alert.parentNode.removeChild(alert);
+                    }
+                }, 300);
+            });
+        }, 5000);
+    </script>
+</body>
+</html>

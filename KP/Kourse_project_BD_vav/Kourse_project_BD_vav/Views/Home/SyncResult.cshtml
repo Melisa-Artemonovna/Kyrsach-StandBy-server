@@ -1,0 +1,272 @@
+﻿@model Kourse_project_BD_vav.Interfaces.SyncResult
+
+@{
+    ViewData["Title"] = "Результат синхронизации";
+}
+
+<!DOCTYPE html>
+<html>
+<head>
+    <title>@ViewData["Title"]</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #e0e0e0 0%, #bdbdbd 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        @@keyframes slideDown {
+            from {
+                opacity: 0;
+                transform: translateY(-20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* Шапка */
+        .header {
+            background: white;
+            padding: 20px 30px;
+            border-radius: 15px;
+            margin-bottom: 25px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+            border-left: 5px solid #6c757d;
+            animation: slideDown 0.5s ease;
+        }
+
+        .back-btn {
+            padding: 10px 20px;
+            background: #f8f9fa;
+            color: #495057;
+            text-decoration: none;
+            border-radius: 8px;
+            font-weight: 600;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            transition: all 0.3s ease;
+        }
+
+        .back-btn:hover {
+            background: #e9ecef;
+            transform: translateX(-3px);
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+
+        /* Результат */
+        .result-card {
+            background: white;
+            padding: 25px;
+            border-radius: 15px;
+            box-shadow: 0 4px 30px rgba(0,0,0,0.1);
+            margin-bottom: 30px;
+            animation: slideDown 0.7s ease;
+        }
+
+        .result-card.success {
+            border-left: 5px solid #28a745;
+        }
+
+        .result-card.error {
+            border-left: 5px solid #dc3545;
+        }
+
+        /* Таблица */
+        .table-container {
+            overflow-x: auto;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        thead {
+            background: #343a40;
+            color: white;
+        }
+
+        th {
+            padding: 15px;
+            text-align: left;
+            font-weight: 600;
+            text-transform: uppercase;
+            font-size: 12px;
+            letter-spacing: 1px;
+        }
+
+        tbody tr {
+            border-bottom: 1px solid #e9ecef;
+            transition: all 0.2s ease;
+        }
+
+        tbody tr:hover {
+            background: #f8f9fa;
+            transform: scale(1.01);
+        }
+
+        td {
+            padding: 15px;
+        }
+
+        .badge {
+            padding: 5px 12px;
+            border-radius: 12px;
+            font-size: 12px;
+            font-weight: 500;
+            display: inline-block;
+        }
+
+        .badge-success {
+            background: #28a745;
+            color: white;
+        }
+
+        .badge-danger {
+            background: #dc3545;
+            color: white;
+        }
+
+        /* Кнопки */
+        .btn {
+            padding: 12px 25px;
+            border-radius: 10px;
+            font-weight: 600;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            border: none;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-size: 15px;
+            margin-right: 10px;
+            margin-top: 20px;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, #6c757d, #495057);
+            color: white;
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 6px 20px rgba(108, 117, 125, 0.4);
+        }
+
+        h1, h3 {
+            color: #343a40;
+            margin-bottom: 15px;
+        }
+
+        p {
+            color: #495057;
+            margin-bottom: 10px;
+        }
+    </style>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css">
+</head>
+<body>
+    <div class="container">
+        <!-- Шапка -->
+        <div class="header">
+            <h1 style="margin: 0; color: #343a40; display: flex; align-items: center; gap: 10px;">Результат синхронизации</h1>
+            <a href="/Home/Dashboard" class="back-btn">
+                <i class="bi bi-arrow-left"></i> Назад в кабинет
+            </a>
+        </div>
+
+        <div class="result-card @(Model.Success ? "success" : "error")">
+            <h3>@(Model.Success ? "Синхронизация завершена успешно" : "Синхронизация завершена с ошибками")</h3>
+            <p>@Model.Message</p>
+            <p>Длительность: @Model.Duration.ToString(@"hh\:mm\:ss")</p>
+            <p>Таблиц синхронизировано: @Model.TablesSynced</p>
+            <p>Всего записей: @Model.TotalRecordsSynced</p>
+            @if (!string.IsNullOrEmpty(Model.ErrorMessage))
+            {
+                <p style="color: #dc3545; font-weight: 600;">Ошибка: @Model.ErrorMessage</p>
+            }
+        </div>
+
+        @if (Model.Tables != null && Model.Tables.Any())
+        {
+            <div class="result-card">
+                <h3>Детали по таблицам</h3>
+                <div class="table-container">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Таблица</th>
+                                <th style="text-align: center;">Записей</th>
+                                <th style="text-align: center;">Статус</th>
+                                <th>Ошибка</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var table in Model.Tables)
+                            {
+                                <tr>
+                                    <td><strong>@table.TableName</strong></td>
+                                    <td style="text-align: center;">
+                                        <span class="badge badge-success">@table.RecordsSynced.ToString("N0")</span>
+                                    </td>
+                                    <td style="text-align: center;">
+                                        @if (table.IsSuccess)
+                                        {
+                                            <span class="badge badge-success">Успешно</span>
+                                        }
+                                        else
+                                        {
+                                            <span class="badge badge-danger">Ошибка</span>
+                                        }
+                                    </td>
+                                    <td>@(table.Error ?? "-")</td>
+                                </tr>
+                            }
+                        </tbody>
+                        <tfoot style="background: #f8f9fa;">
+                            <tr>
+                                <td><strong>Итого:</strong></td>
+                                <td style="text-align: center;">
+                                    <strong>@Model.Tables.Sum(t => t.RecordsSynced).ToString("N0")</strong>
+                                </td>
+                                <td style="text-align: center;">
+                                    @{
+                                        var successCount = Model.Tables.Count(t => t.IsSuccess);
+                                        var totalCount = Model.Tables.Count;
+                                    }
+                                    <span class="badge @(successCount == totalCount ? "badge-success" : "badge-danger")">
+                                        @successCount / @totalCount
+                                    </span>
+                                </td>
+                                <td></td>
+                            </tr>
+                        </tfoot>
+                    </table>
+                </div>
+            </div>
+        }
+
+        <a href="/Home/Sync" class="btn btn-primary">Назад к статусу</a>
+        <a href="/Home/Dashboard" class="btn btn-primary">Назад в кабинет</a>
+    </div>
+</body>
+</html>

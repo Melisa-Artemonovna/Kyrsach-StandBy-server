@@ -1,0 +1,429 @@
+﻿@model List<Kourse_project_BD_vav.Models.Deal>
+@{
+    ViewData["Title"] = "Мои сделки";
+    var periodStats = ViewBag.PeriodStats as dynamic;
+}
+
+<!DOCTYPE html>
+<html>
+<head>
+    <title>@ViewData["Title"]</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #e0e0e0 0%, #bdbdbd 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        /* Шапка */
+        .header {
+            background: white;
+            padding: 20px 30px;
+            border-radius: 15px;
+            margin-bottom: 25px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+            border-left: 5px solid #6c757d;
+            animation: slideDown 0.5s ease;
+        }
+
+        @@keyframes slideDown {
+            from {
+                opacity: 0;
+                transform: translateY(-20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .back-btn {
+            padding: 10px 20px;
+            background: #f8f9fa;
+            color: #495057;
+            text-decoration: none;
+            border-radius: 8px;
+            font-weight: 600;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            transition: all 0.3s ease;
+        }
+
+        .back-btn:hover {
+            background: #e9ecef;
+            transform: translateX(-3px);
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+
+        /* Уведомления */
+        .alert {
+            padding: 15px 20px;
+            border-radius: 10px;
+            margin-bottom: 20px;
+            font-weight: 500;
+            animation: slideDown 0.5s ease;
+        }
+
+        .alert-success {
+            background: #d4edda;
+            color: #155724;
+            border: 1px solid #c3e6cb;
+        }
+
+        .alert-error {
+            background: #f8d7da;
+            color: #721c24;
+            border: 1px solid #f5c6cb;
+        }
+
+        /* Статистика по периодам */
+        .stats-section {
+            background: white;
+            padding: 25px;
+            border-radius: 15px;
+            margin-bottom: 25px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+            animation: slideDown 0.6s ease;
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            margin-top: 20px;
+        }
+
+        .stat-card {
+            background: linear-gradient(135deg, #6c757d 0%, #495057 100%);
+            color: white;
+            padding: 25px;
+            border-radius: 12px;
+            text-align: center;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+        }
+
+        .stat-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 25px rgba(0,0,0,0.2);
+        }
+
+        .stat-label {
+            font-size: 14px;
+            opacity: 0.9;
+            margin-bottom: 10px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .stat-value {
+            font-size: 36px;
+            font-weight: bold;
+            margin: 10px 0;
+        }
+
+        .stat-amount {
+            font-size: 18px;
+            margin-top: 10px;
+            opacity: 0.95;
+        }
+
+        /* Основной контент */
+        .content-card {
+            background: white;
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 4px 30px rgba(0,0,0,0.1);
+            margin-bottom: 30px;
+            animation: slideDown 0.7s ease;
+        }
+
+        /* Кнопки */
+        .btn {
+            padding: 12px 25px;
+            border-radius: 10px;
+            font-weight: 600;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            border: none;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-size: 15px;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, #6c757d, #495057);
+            color: white;
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 6px 20px rgba(108, 117, 125, 0.4);
+        }
+
+        .btn-secondary {
+            background: #f8f9fa;
+            color: #495057;
+            border: 2px solid #e9ecef;
+        }
+
+        .btn-secondary:hover {
+            background: #e9ecef;
+            transform: translateY(-2px);
+        }
+
+        .btn-danger {
+            background: linear-gradient(135deg, #6c757d, #495057);
+            color: white;
+            padding: 6px 12px;
+            font-size: 13px;
+        }
+
+        .btn-danger:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(108, 117, 125, 0.3);
+        }
+
+        /* Таблица */
+        .table-container {
+            overflow-x: auto;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        thead {
+            background: #343a40;
+            color: white;
+        }
+
+        th {
+            padding: 15px;
+            text-align: left;
+            font-weight: 600;
+            text-transform: uppercase;
+            font-size: 12px;
+            letter-spacing: 1px;
+        }
+
+        tbody tr {
+            border-bottom: 1px solid #e9ecef;
+            transition: all 0.2s ease;
+        }
+
+        tbody tr:hover {
+            background: #f8f9fa;
+            transform: scale(1.01);
+        }
+
+        td {
+            padding: 15px;
+        }
+
+        .badge {
+            background: #6c757d;
+            color: white;
+            padding: 4px 10px;
+            border-radius: 12px;
+            font-size: 12px;
+            font-weight: 500;
+        }
+
+        .price {
+            font-weight: bold;
+            color: #28a745;
+        }
+
+        /* Пустое состояние */
+        .empty-state {
+            background: white;
+            padding: 60px 40px;
+            text-align: center;
+            border-radius: 15px;
+            margin: 40px 0;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+            animation: slideDown 0.8s ease;
+        }
+
+        .empty-icon {
+            font-size: 64px;
+            margin-bottom: 20px;
+            opacity: 0.5;
+        }
+
+        .empty-title {
+            color: #6c757d;
+            margin-bottom: 15px;
+            font-size: 24px;
+        }
+
+        .empty-text {
+            color: #6c757d;
+            max-width: 500px;
+            margin: 0 auto 25px;
+            line-height: 1.6;
+        }
+    </style>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css">
+</head>
+<body>
+    <div class="container">
+        <!-- Шапка -->
+        <div class="header">
+            <h1 style="margin: 0; color: #343a40; display: flex; align-items: center; gap: 10px;">
+                <i class="bi bi-briefcase"></i> Мои сделки
+            </h1>
+            <a href="/Home/Dashboard" class="back-btn">
+                <i class="bi bi-arrow-left"></i> Назад в кабинет
+            </a>
+        </div>
+
+        <!-- Уведомления -->
+        @if (TempData["SuccessMessage"] != null)
+        {
+            <div class="alert alert-success">
+                <i class="bi bi-check-circle"></i> @TempData["SuccessMessage"]
+            </div>
+        }
+
+        @if (TempData["ErrorMessage"] != null)
+        {
+            <div class="alert alert-error">
+                <i class="bi bi-exclamation-triangle"></i> @TempData["ErrorMessage"]
+            </div>
+        }
+
+        <!-- Статистика по периодам (только для риелтора) -->
+        @if (User.IsInRole("Realtor") && periodStats != null)
+        {
+            <div class="stats-section">
+                <h2 style="color: #343a40; margin-bottom: 10px; display: flex; align-items: center; gap: 10px;">
+                    <i class="bi bi-graph-up"></i> Активность по периодам
+                </h2>
+                <div class="stats-grid">
+                    <div class="stat-card">
+                        <div class="stat-label">Сделок за неделю</div>
+                        <div class="stat-value">@(periodStats.WeekDealsCount ?? 0)</div>
+                        <div class="stat-amount">Сумма: @((periodStats.WeekDealsAmount ?? 0).ToString("N0")) ₽</div>
+                    </div>
+                    <div class="stat-card" style="background: linear-gradient(135deg, #495057 0%, #343a40 100%);">
+                        <div class="stat-label">Сделок за месяц</div>
+                        <div class="stat-value">@(periodStats.MonthDealsCount ?? 0)</div>
+                        <div class="stat-amount">Сумма: @((periodStats.MonthDealsAmount ?? 0).ToString("N0")) ₽</div>
+                    </div>
+                </div>
+            </div>
+        }
+
+        <!-- Кнопка создания -->
+        @if (User.IsInRole("Admin") || User.IsInRole("Realtor"))
+        {
+            <div style="margin-bottom: 20px;">
+                <a href="/Deal/Create" class="btn btn-primary">
+                    <i class="bi bi-plus-circle"></i> Создать сделку
+                </a>
+            </div>
+        }
+
+        @if (Model == null || !Model.Any())
+        {
+            <div class="empty-state">
+                <div class="empty-icon">
+                    <i class="bi bi-briefcase"></i>
+                </div>
+                <h3 class="empty-title">У вас пока нет сделок</h3>
+                <p class="empty-text">
+                    Начните работать с клиентами, чтобы создавать сделки.
+                </p>
+                @if (User.IsInRole("Admin") || User.IsInRole("Realtor"))
+                {
+                    <a href="/Deal/Create" class="btn btn-primary">
+                        <i class="bi bi-plus-circle"></i> Создать первую сделку
+                    </a>
+                }
+            </div>
+        }
+        else
+        {
+            <!-- Таблица сделок -->
+            <div class="content-card">
+                <div class="table-container">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>ID</th>
+                                <th>Объект</th>
+                                <th>Клиент</th>
+                                <th>Тип</th>
+                                <th>Дата</th>
+                                <th>Сумма</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var deal in Model)
+                            {
+                                <tr>
+                                    <td><strong>#@deal.deal_id</strong></td>
+                                    <td>
+                                        @if (deal.property != null)
+                                        {
+                                            <a href="/Property/Details/@deal.property_id" style="color: #495057; text-decoration: none; font-weight: 500;">
+                                                @deal.property.address
+                                            </a>
+                                        }
+                                        else
+                                        {
+                                            <span style="color: #6c757d;">Объект #@deal.property_id</span>
+                                        }
+                                    </td>
+                                    <td>@(deal.client?.full_name ?? "Клиент не указан")</td>
+                                    <td>
+                                        <span class="badge">@deal.deal_type</span>
+                                    </td>
+                                    <td>@deal.deal_date.ToString("dd.MM.yyyy")</td>
+                                    <td class="price">@deal.deal_price.ToString("N0") ₽</td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        }
+    </div>
+
+    <script>
+        // Автоматическое скрытие уведомлений
+        setTimeout(function() {
+            var alerts = document.querySelectorAll('.alert');
+            alerts.forEach(function(alert) {
+                alert.style.opacity = '0';
+                setTimeout(function() {
+                    if (alert.parentNode) {
+                        alert.parentNode.removeChild(alert);
+                    }
+                }, 300);
+            });
+        }, 5000);
+    </script>
+</body>
+</html>

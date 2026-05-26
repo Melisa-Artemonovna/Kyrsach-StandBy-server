@@ -1,0 +1,181 @@
+is_global = true
+build_property.TargetFramework = net8.0
+build_property.TargetPlatformMinVersion = 
+build_property.UsingMicrosoftNETSdkWeb = true
+build_property.ProjectTypeGuids = 
+build_property.InvariantGlobalization = 
+build_property.PlatformNeutralAssembly = 
+build_property.EnforceExtendedAnalyzerRules = 
+build_property._SupportedPlatformList = Linux,macOS,Windows
+build_property.RootNamespace = Kourse_project_BD_vav
+build_property.RootNamespace = Kourse_project_BD_vav
+build_property.ProjectDir = D:\5 sem\KP\Kourse_project_BD_vav\
+build_property.EnableComHosting = 
+build_property.EnableGeneratedComInterfaceComImportInterop = 
+build_property.RazorLangVersion = 8.0
+build_property.SupportLocalizedComponentNames = 
+build_property.GenerateRazorMetadataSourceChecksumAttributes = 
+build_property.MSBuildProjectDirectory = D:\5 sem\KP\Kourse_project_BD_vav
+build_property._RazorSourceGeneratorDebug = 
+build_property.EffectiveAnalysisLevelStyle = 8.0
+build_property.EnableCodeStyleSeverity = 
+
+[D:/5 sem/KP/Kourse_project_BD_vav/Kourse_project_BD_vav/Views/Account/AccessDenied.cshtml]
+build_metadata.AdditionalFiles.TargetPath = S291cnNlX3Byb2plY3RfQkRfdmF2XFZpZXdzXEFjY291bnRcQWNjZXNzRGVuaWVkLmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/5 sem/KP/Kourse_project_BD_vav/Kourse_project_BD_vav/Views/Account/Index.cshtml]
+build_metadata.AdditionalFiles.TargetPath = S291cnNlX3Byb2plY3RfQkRfdmF2XFZpZXdzXEFjY291bnRcSW5kZXguY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/5 sem/KP/Kourse_project_BD_vav/Kourse_project_BD_vav/Views/Account/Login.cshtml]
+build_metadata.AdditionalFiles.TargetPath = S291cnNlX3Byb2plY3RfQkRfdmF2XFZpZXdzXEFjY291bnRcTG9naW4uY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/5 sem/KP/Kourse_project_BD_vav/Kourse_project_BD_vav/Views/Account/Profile.cshtml]
+build_metadata.AdditionalFiles.TargetPath = S291cnNlX3Byb2plY3RfQkRfdmF2XFZpZXdzXEFjY291bnRcUHJvZmlsZS5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/5 sem/KP/Kourse_project_BD_vav/Kourse_project_BD_vav/Views/Account/Register.cshtml]
+build_metadata.AdditionalFiles.TargetPath = S291cnNlX3Byb2plY3RfQkRfdmF2XFZpZXdzXEFjY291bnRcUmVnaXN0ZXIuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/5 sem/KP/Kourse_project_BD_vav/Kourse_project_BD_vav/Views/Client/Edit.cshtml]
+build_metadata.AdditionalFiles.TargetPath = S291cnNlX3Byb2plY3RfQkRfdmF2XFZpZXdzXENsaWVudFxFZGl0LmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/5 sem/KP/Kourse_project_BD_vav/Kourse_project_BD_vav/Views/Client/Index.cshtml]
+build_metadata.AdditionalFiles.TargetPath = S291cnNlX3Byb2plY3RfQkRfdmF2XFZpZXdzXENsaWVudFxJbmRleC5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/5 sem/KP/Kourse_project_BD_vav/Kourse_project_BD_vav/Views/Deal/Index.cshtml]
+build_metadata.AdditionalFiles.TargetPath = S291cnNlX3Byb2plY3RfQkRfdmF2XFZpZXdzXERlYWxcSW5kZXguY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/5 sem/KP/Kourse_project_BD_vav/Kourse_project_BD_vav/Views/Deal/MyDeals.cshtml]
+build_metadata.AdditionalFiles.TargetPath = S291cnNlX3Byb2plY3RfQkRfdmF2XFZpZXdzXERlYWxcTXlEZWFscy5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/5 sem/KP/Kourse_project_BD_vav/Kourse_project_BD_vav/Views/Favorite/Index.cshtml]
+build_metadata.AdditionalFiles.TargetPath = S291cnNlX3Byb2plY3RfQkRfdmF2XFZpZXdzXEZhdm9yaXRlXEluZGV4LmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/5 sem/KP/Kourse_project_BD_vav/Kourse_project_BD_vav/Views/Home/AdminDashboard.cshtml]
+build_metadata.AdditionalFiles.TargetPath = S291cnNlX3Byb2plY3RfQkRfdmF2XFZpZXdzXEhvbWVcQWRtaW5EYXNoYm9hcmQuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/5 sem/KP/Kourse_project_BD_vav/Kourse_project_BD_vav/Views/Home/BrowseProperties.cshtml]
+build_metadata.AdditionalFiles.TargetPath = S291cnNlX3Byb2plY3RfQkRfdmF2XFZpZXdzXEhvbWVcQnJvd3NlUHJvcGVydGllcy5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/5 sem/KP/Kourse_project_BD_vav/Kourse_project_BD_vav/Views/Home/ClientDashboard.cshtml]
+build_metadata.AdditionalFiles.TargetPath = S291cnNlX3Byb2plY3RfQkRfdmF2XFZpZXdzXEhvbWVcQ2xpZW50RGFzaGJvYXJkLmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/5 sem/KP/Kourse_project_BD_vav/Kourse_project_BD_vav/Views/Home/Dashboard.cshtml]
+build_metadata.AdditionalFiles.TargetPath = S291cnNlX3Byb2plY3RfQkRfdmF2XFZpZXdzXEhvbWVcRGFzaGJvYXJkLmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/5 sem/KP/Kourse_project_BD_vav/Kourse_project_BD_vav/Views/Home/Index.cshtml]
+build_metadata.AdditionalFiles.TargetPath = S291cnNlX3Byb2plY3RfQkRfdmF2XFZpZXdzXEhvbWVcSW5kZXguY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/5 sem/KP/Kourse_project_BD_vav/Kourse_project_BD_vav/Views/Home/Properties.cshtml]
+build_metadata.AdditionalFiles.TargetPath = S291cnNlX3Byb2plY3RfQkRfdmF2XFZpZXdzXEhvbWVcUHJvcGVydGllcy5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/5 sem/KP/Kourse_project_BD_vav/Kourse_project_BD_vav/Views/Home/PublicIndex.cshtml]
+build_metadata.AdditionalFiles.TargetPath = S291cnNlX3Byb2plY3RfQkRfdmF2XFZpZXdzXEhvbWVcUHVibGljSW5kZXguY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/5 sem/KP/Kourse_project_BD_vav/Kourse_project_BD_vav/Views/Home/RealtorDashboard.cshtml]
+build_metadata.AdditionalFiles.TargetPath = S291cnNlX3Byb2plY3RfQkRfdmF2XFZpZXdzXEhvbWVcUmVhbHRvckRhc2hib2FyZC5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/5 sem/KP/Kourse_project_BD_vav/Kourse_project_BD_vav/Views/Home/Realtors.cshtml]
+build_metadata.AdditionalFiles.TargetPath = S291cnNlX3Byb2plY3RfQkRfdmF2XFZpZXdzXEhvbWVcUmVhbHRvcnMuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/5 sem/KP/Kourse_project_BD_vav/Kourse_project_BD_vav/Views/Home/Sync.cshtml]
+build_metadata.AdditionalFiles.TargetPath = S291cnNlX3Byb2plY3RfQkRfdmF2XFZpZXdzXEhvbWVcU3luYy5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/5 sem/KP/Kourse_project_BD_vav/Kourse_project_BD_vav/Views/Home/SyncResult.cshtml]
+build_metadata.AdditionalFiles.TargetPath = S291cnNlX3Byb2plY3RfQkRfdmF2XFZpZXdzXEhvbWVcU3luY1Jlc3VsdC5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/5 sem/KP/Kourse_project_BD_vav/Kourse_project_BD_vav/Views/Profile/Index.cshtml]
+build_metadata.AdditionalFiles.TargetPath = S291cnNlX3Byb2plY3RfQkRfdmF2XFZpZXdzXFByb2ZpbGVcSW5kZXguY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/5 sem/KP/Kourse_project_BD_vav/Kourse_project_BD_vav/Views/PropertyReservation/Create.cshtml]
+build_metadata.AdditionalFiles.TargetPath = S291cnNlX3Byb2plY3RfQkRfdmF2XFZpZXdzXFByb3BlcnR5UmVzZXJ2YXRpb25cQ3JlYXRlLmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/5 sem/KP/Kourse_project_BD_vav/Kourse_project_BD_vav/Views/PropertyReservation/Editcshtml.cshtml]
+build_metadata.AdditionalFiles.TargetPath = S291cnNlX3Byb2plY3RfQkRfdmF2XFZpZXdzXFByb3BlcnR5UmVzZXJ2YXRpb25cRWRpdGNzaHRtbC5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/5 sem/KP/Kourse_project_BD_vav/Kourse_project_BD_vav/Views/PropertyReservation/Index.cshtml]
+build_metadata.AdditionalFiles.TargetPath = S291cnNlX3Byb2plY3RfQkRfdmF2XFZpZXdzXFByb3BlcnR5UmVzZXJ2YXRpb25cSW5kZXguY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/5 sem/KP/Kourse_project_BD_vav/Kourse_project_BD_vav/Views/Property/Create.cshtml]
+build_metadata.AdditionalFiles.TargetPath = S291cnNlX3Byb2plY3RfQkRfdmF2XFZpZXdzXFByb3BlcnR5XENyZWF0ZS5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/5 sem/KP/Kourse_project_BD_vav/Kourse_project_BD_vav/Views/Property/Details.cshtml]
+build_metadata.AdditionalFiles.TargetPath = S291cnNlX3Byb2plY3RfQkRfdmF2XFZpZXdzXFByb3BlcnR5XERldGFpbHMuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/5 sem/KP/Kourse_project_BD_vav/Kourse_project_BD_vav/Views/Property/Index.cshtml]
+build_metadata.AdditionalFiles.TargetPath = S291cnNlX3Byb2plY3RfQkRfdmF2XFZpZXdzXFByb3BlcnR5XEluZGV4LmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/5 sem/KP/Kourse_project_BD_vav/Kourse_project_BD_vav/Views/Realtor/Edit.cshtml]
+build_metadata.AdditionalFiles.TargetPath = S291cnNlX3Byb2plY3RfQkRfdmF2XFZpZXdzXFJlYWx0b3JcRWRpdC5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/5 sem/KP/Kourse_project_BD_vav/Kourse_project_BD_vav/Views/Realtor/Index.cshtml]
+build_metadata.AdditionalFiles.TargetPath = S291cnNlX3Byb2plY3RfQkRfdmF2XFZpZXdzXFJlYWx0b3JcSW5kZXguY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/5 sem/KP/Kourse_project_BD_vav/Kourse_project_BD_vav/Views/Shared/_Layuot.cshtml]
+build_metadata.AdditionalFiles.TargetPath = S291cnNlX3Byb2plY3RfQkRfdmF2XFZpZXdzXFNoYXJlZFxfTGF5dW90LmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/5 sem/KP/Kourse_project_BD_vav/Kourse_project_BD_vav/Views/Sync/Health.cshtml]
+build_metadata.AdditionalFiles.TargetPath = S291cnNlX3Byb2plY3RfQkRfdmF2XFZpZXdzXFN5bmNcSGVhbHRoLmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/5 sem/KP/Kourse_project_BD_vav/Kourse_project_BD_vav/Views/Sync/Index.cshtml]
+build_metadata.AdditionalFiles.TargetPath = S291cnNlX3Byb2plY3RfQkRfdmF2XFZpZXdzXFN5bmNcSW5kZXguY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/5 sem/KP/Kourse_project_BD_vav/Pages/Error.cshtml]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcRXJyb3IuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/5 sem/KP/Kourse_project_BD_vav/Pages/Index.cshtml]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcSW5kZXguY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/5 sem/KP/Kourse_project_BD_vav/Pages/Privacy.cshtml]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcUHJpdmFjeS5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/5 sem/KP/Kourse_project_BD_vav/Pages/Shared/_ValidationScriptsPartial.cshtml]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcU2hhcmVkXF9WYWxpZGF0aW9uU2NyaXB0c1BhcnRpYWwuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/5 sem/KP/Kourse_project_BD_vav/Pages/_ViewImports.cshtml]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcX1ZpZXdJbXBvcnRzLmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/5 sem/KP/Kourse_project_BD_vav/Pages/_ViewStart.cshtml]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcX1ZpZXdTdGFydC5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/5 sem/KP/Kourse_project_BD_vav/Pages/Shared/_Layout.cshtml]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcU2hhcmVkXF9MYXlvdXQuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = b-z34a327wlj

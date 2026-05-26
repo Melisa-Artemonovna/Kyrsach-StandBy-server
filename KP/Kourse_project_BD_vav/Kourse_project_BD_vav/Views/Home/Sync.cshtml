@@ -1,0 +1,741 @@
+﻿@model Kourse_project_BD_vav.Interfaces.SyncStatus
+@using Kourse_project_BD_vav.Interfaces
+@{
+    ViewData["Title"] = "Синхронизация баз данных";
+}
+
+<!DOCTYPE html>
+<html>
+<head>
+    <title>@ViewData["Title"]</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #e0e0e0 0%, #bdbdbd 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        @@keyframes slideDown {
+            from {
+                opacity: 0;
+                transform: translateY(-20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* Шапка */
+        .header {
+            background: white;
+            padding: 20px 30px;
+            border-radius: 15px;
+            margin-bottom: 25px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+            border-left: 5px solid #6c757d;
+            animation: slideDown 0.5s ease;
+        }
+
+        .back-btn {
+            padding: 10px 20px;
+            background: #f8f9fa;
+            color: #495057;
+            text-decoration: none;
+            border-radius: 8px;
+            font-weight: 600;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            transition: all 0.3s ease;
+        }
+
+        .back-btn:hover {
+            background: #e9ecef;
+            transform: translateX(-3px);
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+
+        /* Карточки */
+        .card {
+            background: white;
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 4px 30px rgba(0,0,0,0.1);
+            margin-bottom: 25px;
+            animation: slideDown 0.7s ease;
+        }
+
+        .card-header {
+            background: #343a40;
+            color: white;
+            padding: 20px;
+            font-weight: 600;
+            font-size: 18px;
+        }
+
+        .card-body {
+            padding: 25px;
+        }
+
+        /* Кнопки синхронизации */
+        .sync-buttons {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+
+        .sync-btn {
+            padding: 20px;
+            border-radius: 12px;
+            border: none;
+            cursor: pointer;
+            font-weight: 600;
+            font-size: 16px;
+            transition: all 0.3s ease;
+            text-align: center;
+            color: white;
+        }
+
+        .sync-btn-primary {
+            background: linear-gradient(135deg, #27ae60, #219653);
+        }
+
+        .sync-btn-primary:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 6px 20px rgba(39, 174, 96, 0.4);
+        }
+
+        .sync-btn-success {
+            background: linear-gradient(135deg, #27ae60, #219653);
+        }
+
+        .sync-btn-success:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 6px 20px rgba(39, 174, 96, 0.4);
+        }
+
+        .sync-btn-danger {
+            background: linear-gradient(135deg, #e74c3c, #c0392b);
+        }
+
+        .sync-btn-danger:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 6px 20px rgba(231, 76, 60, 0.4);
+        }
+
+        .sync-btn-warning {
+            background: linear-gradient(135deg, #f39c12, #e67e22);
+        }
+
+        .sync-btn-warning:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 6px 20px rgba(243, 156, 18, 0.4);
+        }
+
+        .sync-btn-label {
+            font-size: 14px;
+            opacity: 0.9;
+            margin-top: 8px;
+        }
+
+        /* Статусные карточки */
+        .status-cards {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+
+        .status-card {
+            background: white;
+            padding: 20px;
+            border-radius: 15px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+            transition: all 0.3s ease;
+        }
+
+        .status-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 25px rgba(0,0,0,0.2);
+        }
+
+        .status-card.border-success {
+            border-left: 5px solid #28a745;
+        }
+
+        .status-card.border-danger {
+            border-left: 5px solid #dc3545;
+        }
+
+        .status-card.border-info {
+            border-left: 5px solid #17a2b8;
+        }
+
+        .status-card.border-warning {
+            border-left: 5px solid #ffc107;
+        }
+
+        .badge {
+            padding: 6px 12px;
+            border-radius: 12px;
+            font-size: 12px;
+            font-weight: 600;
+            display: inline-block;
+        }
+
+        .bg-success {
+            background: #28a745;
+            color: white;
+        }
+
+        .bg-danger {
+            background: #dc3545;
+            color: white;
+        }
+
+        .bg-warning {
+            background: #ffc107;
+            color: #212529;
+        }
+
+        .bg-info {
+            background: #17a2b8;
+            color: white;
+        }
+
+        .bg-secondary {
+            background: #6c757d;
+            color: white;
+        }
+
+        /* Таблица */
+        .table-container {
+            overflow-x: auto;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        thead {
+            background: #343a40;
+            color: white;
+        }
+
+        th {
+            padding: 15px;
+            text-align: left;
+            font-weight: 600;
+            text-transform: uppercase;
+            font-size: 12px;
+            letter-spacing: 1px;
+        }
+
+        tbody tr {
+            border-bottom: 1px solid #e9ecef;
+            transition: all 0.2s ease;
+        }
+
+        tbody tr:hover {
+            background: #f8f9fa;
+            transform: scale(1.01);
+        }
+
+        td {
+            padding: 15px;
+        }
+
+        .table-success {
+            background-color: rgba(40, 167, 69, 0.1);
+        }
+
+        .table-warning {
+            background-color: rgba(255, 193, 7, 0.1);
+        }
+
+        .table-danger {
+            background-color: rgba(220, 53, 69, 0.1);
+        }
+
+        /* Уведомления */
+        .alert {
+            padding: 15px 20px;
+            border-radius: 10px;
+            margin-bottom: 20px;
+            font-weight: 500;
+            animation: slideDown 0.5s ease;
+        }
+
+        .alert-warning {
+            background: #fff3cd;
+            color: #856404;
+            border: 1px solid #ffeaa7;
+        }
+
+        /* Текст */
+        .text-success {
+            color: #28a745;
+            font-weight: 600;
+        }
+
+        .text-danger {
+            color: #dc3545;
+            font-weight: 600;
+        }
+
+        .text-muted {
+            color: #6c757d;
+        }
+
+        .small {
+            font-size: 13px;
+        }
+
+        h1, h2, h3, h4, h5, h6 {
+            color: #343a40;
+            font-weight: 700;
+        }
+
+        form {
+            margin: 0;
+        }
+
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            overflow: auto;
+            background-color: rgba(0,0,0,0.5);
+        }
+
+        .modal-content {
+            background-color: #fefefe;
+            margin: 10% auto;
+            padding: 20px;
+            border: 1px solid #888;
+            width: 520px;
+            border-radius: 10px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.3);
+        }
+
+        .close {
+            color: #aaa;
+            font-size: 28px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+
+        .close:hover {
+            color: #000;
+        }
+    </style>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css">
+</head>
+<body>
+    <div class="container">
+        <!-- Шапка -->
+        <div class="header">
+            <h1 style="margin: 0; color: #343a40; display: flex; align-items: center; gap: 10px;">Синхронизация баз данных</h1>
+            <a href="/Home/Dashboard" class="back-btn">
+                <i class="bi bi-arrow-left"></i> Назад в кабинет
+            </a>
+        </div>
+
+        @if (TempData["SyncMessage"] != null)
+        {
+            <div class="alert alert-warning" style="background:#d4edda;color:#155724;border-color:#c3e6cb;">
+                @TempData["SyncMessage"]
+            </div>
+        }
+        @if (TempData["SyncError"] != null)
+        {
+            <div class="alert alert-warning" style="background:#f8d7da;color:#721c24;border-color:#f5c6cb;">
+                @TempData["SyncError"]
+            </div>
+        }
+
+        <!-- Панель управления -->
+        <div class="card">
+            <div class="card-header">Управление синхронизацией</div>
+            <div class="card-body">
+                <div class="sync-buttons">
+                    <!-- Полная синхронизация -->
+                    <form method="post" action="/SyncPage/FullSync">
+                        @Html.AntiForgeryToken()
+                        <button type="submit" class="sync-btn sync-btn-primary">
+                            <div style="font-size: 20px; margin-bottom: 8px;">
+                                <i class="bi bi-arrow-repeat"></i>
+                            </div>
+                            <strong>Полная синхронизация</strong>
+                            <div class="sync-btn-label">Все таблицы • Длительная операция</div>
+                        </button>
+                    </form>
+
+                    <!-- Инкрементальная синхронизация -->
+                    <form method="post" action="/SyncPage/IncrementalSync">
+                        @Html.AntiForgeryToken()
+                        <button type="submit" class="sync-btn sync-btn-success">
+                            <div style="font-size: 20px; margin-bottom: 8px;">
+                                <i class="bi bi-lightning"></i>
+                            </div>
+                            <strong>Инкрементальная</strong>
+                            <div class="sync-btn-label">Только изменения • Быстрая</div>
+                        </button>
+                    </form>
+
+                    <!-- Автосинхронизация -->
+                    @if (Model.AutoSyncEnabled)
+                    {
+                        <form method="post" action="/SyncPage/StopAutoSync">
+                            @Html.AntiForgeryToken()
+                            <button type="submit" class="sync-btn sync-btn-danger">
+                                <div style="font-size: 20px; margin-bottom: 8px;">
+                                    <i class="bi bi-stop-circle"></i>
+                                </div>
+                                <strong>Остановить автосинхронизацию</strong>
+                                <div class="sync-btn-label">Автосинхронизация активна</div>
+                            </button>
+                        </form>
+                    }
+                    else
+                    {
+                        <form method="post" action="/SyncPage/StartAutoSync">
+                            @Html.AntiForgeryToken()
+                            <button type="submit" class="sync-btn sync-btn-warning">
+                                <div style="font-size: 20px; margin-bottom: 8px;">
+                                    <i class="bi bi-play-circle"></i>
+                                </div>
+                                <strong>Запустить автосинхронизацию</strong>
+                                <div class="sync-btn-label">Интервал: 5 минут</div>
+                            </button>
+                        </form>
+                    }
+                </div>
+
+                <div class="sync-buttons" style="margin-top: 10px;">
+                    <a href="/Home/ExportDeals" class="sync-btn sync-btn-success" style="text-decoration:none; display:block;">
+                        <div style="font-size: 20px; margin-bottom: 8px;">
+                            <i class="bi bi-download"></i>
+                        </div>
+                        <strong>Экспорт Deals</strong>
+                        <div class="sync-btn-label">Скачать JSON файл</div>
+                    </a>
+
+                    <button type="button" class="sync-btn sync-btn-primary" onclick="showImportModal()">
+                        <div style="font-size: 20px; margin-bottom: 8px;">
+                            <i class="bi bi-upload"></i>
+                        </div>
+                        <strong>Импорт Deals</strong>
+                        <div class="sync-btn-label">Загрузить JSON в PostgreSQL</div>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Информация о последней синхронизации -->
+        <div class="status-cards">
+            <div class="status-card">
+                <h5 style="margin-bottom: 15px; color: #343a40;">История синхронизации</h5>
+                <div>
+                    <strong>Автосинхронизация:</strong>
+                    @if (Model.AutoSyncEnabled)
+                    {
+                        <span class="text-success">Включена</span>
+                        @if (Model.NextAutoSync.HasValue)
+                        {
+                            <div class="small text-muted" style="margin-top: 5px;">
+                                Следующая: @Model.NextAutoSync.Value.ToString("HH:mm:ss")
+                            </div>
+                        }
+                    }
+                    else
+                    {
+                        <span class="text-danger">Отключена</span>
+                    }
+                </div>
+            </div>
+
+            <div class="status-card">
+                <h5 style="margin-bottom: 15px; color: #343a40;">Системное здоровье</h5>
+                @if (Model.SystemHealth.Status.ToLower() == "healthy")
+                {
+                    <span class="badge bg-success">@Model.SystemHealth.Status</span>
+                }
+                else if (Model.SystemHealth.Status.ToLower() == "degraded")
+                {
+                    <span class="badge bg-warning">@Model.SystemHealth.Status</span>
+                }
+                else
+                {
+                    <span class="badge bg-danger">@Model.SystemHealth.Status</span>
+                }
+            </div>
+        </div>
+
+        <!-- Статус подключений -->
+        <div class="status-cards">
+            <div class="status-card @(Model.MssqlConnected ? "border-success" : "border-danger")">
+                <h5 style="margin-bottom: 10px; color: #343a40;">MSSQL</h5>
+                <p class="text-muted small" style="margin-bottom: 10px;">Standby база</p>
+                <span class="badge @(Model.MssqlConnected ? "bg-success" : "bg-danger")">
+                    @(Model.MssqlConnected ? "ONLINE" : "OFFLINE")
+                </span>
+            </div>
+
+            <div class="status-card @(Model.PgConnected ? "border-success" : "border-danger")">
+                <h5 style="margin-bottom: 10px; color: #343a40;">PostgreSQL</h5>
+                <p class="text-muted small" style="margin-bottom: 10px;">Основная база</p>
+                <span class="badge @(Model.PgConnected ? "bg-success" : "bg-danger")">
+                    @(Model.PgConnected ? "ONLINE" : "OFFLINE")
+                </span>
+            </div>
+
+            <div class="status-card border-info">
+                <h5 style="margin-bottom: 10px; color: #343a40;">Записи</h5>
+                <p class="text-muted small" style="margin-bottom: 10px;">Всего синхронизировано</p>
+                <h3 style="margin: 0; color: #343a40;">@Model.TotalRecordsSynced.ToString("N0")</h3>
+            </div>
+
+            <div class="status-card @(Model.ReplicationLag.TotalHours < 1 ? "border-success" : Model.ReplicationLag.TotalHours < 24 ? "border-warning" : "border-danger")">
+                <h5 style="margin-bottom: 10px; color: #343a40;">Задержка</h5>
+                <p class="text-muted small" style="margin-bottom: 10px;">Репликации</p>
+                <h4 style="margin: 0; color: @(Model.ReplicationLag.TotalHours < 1 ? "#28a745" : Model.ReplicationLag.TotalHours < 24 ? "#ffc107" : "#dc3545");">
+                    @Model.ReplicationLag.ToString(@"hh\:mm\:ss")
+                </h4>
+                <small class="text-muted">чч:мм:сс</small>
+            </div>
+        </div>
+
+        <!-- Таблица сравнения -->
+        <div class="card">
+            <div class="card-header">Статус таблиц</div>
+            <div class="card-body">
+                @if (Model.Tables != null && Model.Tables.Any())
+                {
+                    <div class="table-container">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>Таблица</th>
+                                    <th style="text-align: center;">PostgreSQL</th>
+                                    <th style="text-align: center;">MSSQL</th>
+                                    <th style="text-align: center;">Разница</th>
+                                    <th style="text-align: center;">Статус</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach (var table in Model.Tables)
+                                {
+                                    var statusClass = table.IsSynced ? "table-success" :
+                                    table.Difference > 10 ? "table-danger" : "table-warning";
+                                    var badgeClass = table.IsSynced ? "bg-success" :
+                                    table.Difference > 10 ? "bg-danger" : "bg-warning";
+
+                                    <tr class="@statusClass">
+                                        <td><strong>@table.Name</strong></td>
+                                        <td style="text-align: center;">
+                                            <span class="badge bg-info">@table.PgCount.ToString("N0")</span>
+                                        </td>
+                                        <td style="text-align: center;">
+                                            <span class="badge bg-secondary">@table.MssqlCount.ToString("N0")</span>
+                                        </td>
+                                        <td style="text-align: center;">
+                                            @if (table.Difference > 0)
+                                            {
+                                                <span class="badge bg-warning">@table.Difference.ToString("N0")</span>
+                                            }
+                                            else
+                                            {
+                                                <span class="badge bg-secondary">0</span>
+                                            }
+                                        </td>
+                                        <td style="text-align: center;">
+                                            @if (table.IsSynced)
+                                            {
+                                                <span class="badge bg-success">Синхронизирована</span>
+                                            }
+                                            else
+                                            {
+                                                <span class="badge @badgeClass">
+                                                    @if (table.Difference > 10)
+                                                    {
+                                                        <text>Критическая разница</text>
+                                                    }
+                                                    else
+                                                    {
+                                                        <text>Требует синхронизации</text>
+                                                    }
+                                                </span>
+                                            }
+                                        </td>
+                                    </tr>
+                                }
+                            </tbody>
+                            <tfoot style="background: #f8f9fa;">
+                                <tr>
+                                    <td><strong>Итого:</strong></td>
+                                    <td style="text-align: center;">
+                                        <strong>@Model.Tables.Sum(t => t.PgCount).ToString("N0")</strong>
+                                    </td>
+                                    <td style="text-align: center;">
+                                        <strong>@Model.Tables.Sum(t => t.MssqlCount).ToString("N0")</strong>
+                                    </td>
+                                    <td style="text-align: center;">
+                                        <strong>@Model.Tables.Sum(t => t.Difference).ToString("N0")</strong>
+                                    </td>
+                                    <td style="text-align: center;">
+                                        @{
+                                            var syncedCount = Model.Tables.Count(t => t.IsSynced);
+                                            var totalCount = Model.Tables.Count;
+                                            var percentage = totalCount > 0 ? (syncedCount * 100) / totalCount : 0;
+                                        }
+                                        <span class="badge @(percentage == 100 ? "bg-success" : percentage > 70 ? "bg-warning" : "bg-danger")">
+                                            @syncedCount из @totalCount
+                                        </span>
+                                    </td>
+                                </tr>
+                            </tfoot>
+                        </table>
+                    </div>
+                }
+                else
+                {
+                    <div class="alert alert-warning">
+                        Нет данных о таблицах. Возможно, базы данных пусты или произошла ошибка подключения.
+                    </div>
+                }
+            </div>
+        </div>
+    </div>
+
+    <div id="importModal" class="modal">
+        <div class="modal-content">
+            <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:16px;">
+                <h3 style="margin:0;">Импорт Deals из JSON</h3>
+                <span class="close" onclick="closeImportModal()">&times;</span>
+            </div>
+
+            <form id="importForm" enctype="multipart/form-data">
+                @Html.AntiForgeryToken()
+                <div style="margin-bottom: 14px;">
+                    <label for="importFile" style="display:block;margin-bottom:8px;font-weight:600;">Выберите JSON файл</label>
+                    <input id="importFile" type="file" name="file" accept=".json" required style="width:100%;padding:10px;border:1px solid #ccc;border-radius:8px;" />
+                </div>
+                <div id="importError" style="display:none;padding:10px;margin-bottom:12px;background:#f8d7da;color:#721c24;border-radius:6px;"></div>
+                <div id="importSuccess" style="display:none;padding:10px;margin-bottom:12px;background:#d4edda;color:#155724;border-radius:6px;"></div>
+                <div style="display:flex;justify-content:flex-end;gap:10px;">
+                    <button type="button" class="sync-btn sync-btn-danger" style="padding:10px 14px;" onclick="closeImportModal()">Отмена</button>
+                    <button type="submit" class="sync-btn sync-btn-primary" style="padding:10px 14px;">Импортировать</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        function showImportModal() {
+            const modal = document.getElementById('importModal');
+            if (modal) {
+                modal.style.display = 'block';
+                document.getElementById('importError').style.display = 'none';
+                document.getElementById('importSuccess').style.display = 'none';
+                document.getElementById('importForm').reset();
+            }
+        }
+
+        function closeImportModal() {
+            const modal = document.getElementById('importModal');
+            if (modal) {
+                modal.style.display = 'none';
+            }
+        }
+
+        document.getElementById('importForm')?.addEventListener('submit', async function (e) {
+            e.preventDefault();
+
+            const fileInput = document.getElementById('importFile');
+            const errorDiv = document.getElementById('importError');
+            const successDiv = document.getElementById('importSuccess');
+            const token = document.querySelector('input[name="__RequestVerificationToken"]')?.value;
+
+            if (!fileInput.files || fileInput.files.length === 0) {
+                errorDiv.textContent = 'Выберите файл для импорта';
+                errorDiv.style.display = 'block';
+                successDiv.style.display = 'none';
+                return;
+            }
+
+            const formData = new FormData();
+            formData.append('file', fileInput.files[0]);
+
+            try {
+                const response = await fetch('/Home/ImportDeals', {
+                    method: 'POST',
+                    body: formData,
+                    headers: {
+                        'RequestVerificationToken': token || ''
+                    }
+                });
+
+                const result = await response.json();
+
+                if (result.success) {
+                    successDiv.textContent = result.message || 'Импорт завершен успешно';
+                    successDiv.style.display = 'block';
+                    errorDiv.style.display = 'none';
+                    setTimeout(() => window.location.reload(), 1500);
+                } else {
+                    errorDiv.textContent = result.message || 'Ошибка импорта';
+                    errorDiv.style.display = 'block';
+                    successDiv.style.display = 'none';
+                }
+            } catch (err) {
+                errorDiv.textContent = 'Ошибка запроса: ' + err.message;
+                errorDiv.style.display = 'block';
+                successDiv.style.display = 'none';
+            }
+        });
+
+        window.onclick = function(event) {
+            const modal = document.getElementById('importModal');
+            if (modal && event.target === modal) {
+                closeImportModal();
+            }
+        };
+
+        // Автоматическое скрытие уведомлений
+        setTimeout(function() {
+            var alerts = document.querySelectorAll('.alert');
+            alerts.forEach(function(alert) {
+                alert.style.opacity = '0';
+                setTimeout(function() {
+                    if (alert.parentNode) {
+                        alert.parentNode.removeChild(alert);
+                    }
+                }, 300);
+            });
+        }, 5000);
+    </script>
+</body>
+</html>

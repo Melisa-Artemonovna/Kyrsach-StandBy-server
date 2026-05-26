@@ -1,0 +1,127 @@
+﻿@model Kourse_project_BD_vav.Models.Deal
+@{
+    ViewData["Title"] = "Создание сделки";
+}
+
+<div class="container" style="max-width: 800px; margin: 0 auto; padding: 20px;">
+    <!-- Сообщения -->
+    @if (TempData["SuccessMessage"] != null)
+    {
+        <div style="background: #d4edda; color: #155724; padding: 15px; border-radius: 5px; margin-bottom: 20px;">
+            ✅ @TempData["SuccessMessage"]
+        </div>
+    }
+
+    @if (TempData["ErrorMessage"] != null)
+    {
+        <div style="background: #f8d7da; color: #721c24; padding: 15px; border-radius: 5px; margin-bottom: 20px;">
+            ❌ @TempData["ErrorMessage"]
+        </div>
+    }
+
+    <!-- Шапка -->
+    <div style="background: white; padding: 20px; border-radius: 10px; margin-bottom: 20px; display: flex; justify-content: space-between; align-items: center;">
+        <a href="/Deal" style="background: #6c757d; color: white; padding: 10px 15px; border-radius: 5px; text-decoration: none;">← Назад</a>
+        <h1 style="margin: 0;">➕ Создание сделки</h1>
+    </div>
+
+    <!-- Форма -->
+    <div style="background: white; padding: 30px; border-radius: 10px;">
+        <form method="post">
+            @Html.AntiForgeryToken()
+
+            <!-- Объект -->
+            <div style="margin-bottom: 20px;">
+                <label style="display: block; margin-bottom: 5px; font-weight: bold;">Объект недвижимости *</label>
+                <select name="property_id" style="width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 5px;" required>
+                    <option value="">-- Выберите объект --</option>
+                    @if (ViewBag.Properties != null)
+                    {
+                        foreach (var item in ViewBag.Properties)
+                        {
+                            <option value="@item.Value">@item.Text</option>
+                        }
+                    }
+                </select>
+            </div>
+
+            <!-- Клиент -->
+            <div style="margin-bottom: 20px;">
+                <label style="display: block; margin-bottom: 5px; font-weight: bold;">Клиент *</label>
+                <select name="client_id" style="width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 5px;" required>
+                    <option value="">-- Выберите клиента --</option>
+                    @if (ViewBag.Clients != null)
+                    {
+                        foreach (var item in ViewBag.Clients)
+                        {
+                            <option value="@item.Value">@item.Text</option>
+                        }
+                    }
+                </select>
+            </div>
+
+            <!-- Тип сделки -->
+            <div style="margin-bottom: 20px;">
+                <label style="display: block; margin-bottom: 5px; font-weight: bold;">Тип сделки *</label>
+                <select name="deal_type" style="width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 5px;" required>
+                    <option value="">-- Выберите тип --</option>
+                    <option value="Продажа">Продажа</option>
+                    <option value="Аренда">Аренда</option>
+                    <option value="Обмен">Обмен</option>
+                </select>
+            </div>
+
+            <!-- Статус -->
+            <div style="margin-bottom: 20px;">
+                <label style="display: block; margin-bottom: 5px; font-weight: bold;">Статус сделки</label>
+                <select name="deal_status" style="width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 5px;">
+                    <option value="В обработке">В обработке</option>
+                    <option value="Ожидает оплаты">Ожидает оплаты</option>
+                    <option value="Завершена">Завершена</option>
+                </select>
+            </div>
+
+            <!-- Сумма -->
+            <div style="margin-bottom: 20px;">
+                <label style="display: block; margin-bottom: 5px; font-weight: bold;">Сумма сделки (руб.) *</label>
+                <input type="number" name="deal_price" style="width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 5px;"
+                       min="1" step="0.01" placeholder="1000000" value="1000000" required>
+            </div>
+
+            <!-- Дата -->
+            <div style="margin-bottom: 30px;">
+                <label style="display: block; margin-bottom: 5px; font-weight: bold;">Дата сделки</label>
+                <input type="datetime-local" name="deal_date" style="width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 5px;"
+                       value="@DateTime.Now.ToString("yyyy-MM-ddTHH:mm")">
+            </div>
+
+            <!-- Кнопки -->
+            <div style="display: flex; justify-content: space-between; padding-top: 20px; border-top: 1px solid #eee;">
+                <a href="/Deal" style="background: #6c757d; color: white; padding: 10px 20px; border-radius: 5px; text-decoration: none; border: none;">Отмена</a>
+                <button type="submit" style="background: #28a745; color: white; padding: 10px 20px; border-radius: 5px; border: none; cursor: pointer;">Создать сделку</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<script>
+    // Простая проверка формы
+    document.querySelector('form').addEventListener('submit', function(e) {
+        const property = document.querySelector('select[name="property_id"]');
+        const client = document.querySelector('select[name="client_id"]');
+        const dealType = document.querySelector('select[name="deal_type"]');
+        const price = document.querySelector('input[name="deal_price"]');
+
+        let errors = [];
+
+        if (!property.value) errors.push("Выберите объект недвижимости");
+        if (!client.value) errors.push("Выберите клиента");
+        if (!dealType.value) errors.push("Выберите тип сделки");
+        if (!price.value || parseFloat(price.value) <= 0) errors.push("Введите корректную сумму");
+
+        if (errors.length > 0) {
+            e.preventDefault();
+            alert("Ошибки:\n" + errors.join("\n"));
+        }
+    });
+</script>

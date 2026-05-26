@@ -1,0 +1,31 @@
+version: '3.8'
+services:
+  postgres-master:
+    image: postgres:15
+    container_name: pg-master
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: 1234
+      POSTGRES_DB: realestate
+    command: -c wal_level=replica -c max_wal_senders=10 -c max_replication_slots=10 -c hot_standby=on
+    ports:
+      - "5432:5432"
+
+  postgres-slave:
+    image: postgres:15
+    container_name: pg-slave
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: 1234
+    # Скрипт инициализации для превращения в standby
+    entrypoint: 
+      - bash
+      - -c
+      - |
+        rm -rf /var/lib/postgresql/data/*
+        pg_basebackup -h postgres-master -D /var/lib/postgresql/data -U admin -v -P -R
+        docker-entrypoint.sh postgres
+    depends_on:
+      - postgres-master
+    ports:
+      - "5433:5432"

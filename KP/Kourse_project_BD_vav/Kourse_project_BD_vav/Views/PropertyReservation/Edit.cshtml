@@ -1,0 +1,47 @@
+﻿@* @model Kourse_project_BD_vav.Models.PropertyReservation
+
+@{
+    ViewData["Title"] = "Редактирование резервирования";
+}
+
+<div class="container">
+    <h1>@ViewData["Title"]</h1>
+
+    <div class="row">
+        <div class="col-md-6">
+            <form asp-action="Edit" method="post">
+                @Html.AntiForgeryToken()
+                <input type="hidden" asp-for="reservation_id" />
+                <input type="hidden" asp-for="property_id" />
+                <input type="hidden" asp-for="client_id" />
+                <input type="hidden" asp-for="realtor_id" />
+                <input type="hidden" asp-for="reservation_date" />
+
+                <div class="mb-3">
+                    <label asp-for="expiry_date" class="form-label">Дата и время просмотра</label>
+                    <input asp-for="expiry_date" type="datetime-local" class="form-control" required />
+                    <span asp-validation-for="expiry_date" class="text-danger"></span>
+                </div>
+
+                <div class="mb-3">
+                    <label asp-for="status" class="form-label">Статус</label>
+                    <select asp-for="status" class="form-select">
+                        <option value="Active">Активен</option>
+                        <option value="Completed">Завершен</option>
+                        <option value="Cancelled">Отменен</option>
+                    </select>
+                    <span asp-validation-for="status" class="text-danger"></span>
+                </div>
+
+                <div class="d-flex gap-2">
+                    <button type="submit" class="btn btn-primary">Сохранить</button>
+                    <a href="/PropertyReservation" class="btn btn-secondary">Отмена</a>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+} *@
